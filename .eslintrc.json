@@ -7,7 +7,7 @@
     "mocha": true
   },
   "rules": {
-
+    
   },
   "plugins": [
     "react"
