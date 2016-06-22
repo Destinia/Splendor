@@ -1,0 +1,34 @@
+.background {
+	margin-left: 0;
+	margin-right: 0;
+	top: 0;
+	height: 100vh;
+	background-image: url(/public/images/background.jpg);
+}
+
+.loading {
+	background-size: 100% 100%;
+	background-image: url(/public/images/splendor-loading-screen.png)
+}
+
+.background h1 {
+	color:#FFF;
+	align: center;
+}
+
+.desk-region{
+	height: 80vh;
+}
+
+.user-region{
+	height: 20vh;
+}
+
+.fill-height {
+	min-height: 100%;
+	height: 100vh;
+}
+
+.fix {
+	height: 100vh;
+}

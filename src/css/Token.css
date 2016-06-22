@@ -1,0 +1,35 @@
+.fullHeight {
+	height:80%;
+	margin-right: auto;
+	margin-left: auto;
+	max-height: initial;
+	width: 100%;
+	top:20px;
+	margin-top: 50px;
+
+}
+
+
+div.token {
+  opacity: 1;
+  margin-bottom: 5px;
+}
+div.two {
+  top: -600px;
+  opacity: 0;
+}
+div.three {
+  top: -600px;
+  opacity: 0;
+}
+
+.fullHeight img {
+	width:50%;
+	height: 50%;
+}
+
+.token-count {
+	margin-left:20px;
+	color:#FFF;
+	font-size: 25px;
+}

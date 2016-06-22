@@ -1,0 +1,55 @@
+.gem {
+	overflow: hidden;
+}
+
+
+.gem .token {
+	margin-left: 10%;
+	width: 100%;
+	height: 10vh;
+}
+
+.gem .token img {
+	width:60%;
+
+}
+
+.gem .token span {
+	margin-left: 10%;
+}
+
+.currency {
+	width: 100%;
+	height: 10vh;
+}
+
+.currency img {
+	width:80%;
+}
+
+.user-region .first {
+	margin-left: 5%;
+}
+
+.gem span {
+	font-size: 18px;
+	color:#FFF;
+}
+
+.user-region {
+	position: absolute;
+	height: inherit;
+	width: 100%;
+
+}
+
+p.image-container {
+	width: 100%;
+	height: 0;
+	padding-bottom: 0%;
+	overflow: hidden;
+}
+
+p.image-container img {
+	width: 100%;
+}

@@ -127,5 +127,10 @@ exports = module.exports = function createGame() {
     drawCard,
     takeToken,
     addUser,
+    // for testing no allowed to take
+    deck,
+    curToken,
+    users,
+    curCard,
   };
 };
