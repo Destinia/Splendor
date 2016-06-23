@@ -61,7 +61,7 @@ exports = module.exports = (io) => {
       console.log('new user ', name, 'mount');
       socket.emit('init', {
         name,
-        users: userNames.get(),
+        players: userNames.get(),
         cards: newGame.get_cur_card(),
         token: newGame.get_cur_token(),
         nobel: newGame.get_nobel(),
