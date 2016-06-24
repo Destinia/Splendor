@@ -1,31 +1,65 @@
-import createReducer from '../utils/createReducer';
 import {
         UPDATE_TOKEN,
         YOUR_TURN,
         UPDATE_CARD,
         INIT,
         PHERCHASE,
-        CHECKOUT,
         TAKE_TOKEN,
         MY_TURN,
+        UPDATE_PHERCHASE,
         } from '../actions/boardapp';
 
 const initToken = { Emerald: 7, Sapphire: 7, Ruby: 7, Diamond: 7, Agate: 7, Gold: 5 };
 const initUserToken = { Emerald: 0, Sapphire: 0, Ruby: 0, Diamond: 0, Agate: 0, Gold: 0 };
+const initCard = { top: [], mid: [], bot: [] };
+
+export function inited(state = false, action) {
+  if (action.type === INIT) {
+    return true;
+  }
+  return false;
+}
+
+export function players(state = {}, action) {
+  switch (action.type) {
+    case INIT: {
+      return action.players;
+    }
+    default: {
+      return state;
+    }
+  }
+}
+
+export function name(state = '', action) {
+  switch (action.type) {
+    case INIT: {
+      return action.name;
+    }
+    default: {
+      return state;
+    }
+  }
+}
 
 export function curPlayer(state = false, action) {
   switch (action.type) {
+    case INIT: {
+      return action.curPlayer;
+    }
     case YOUR_TURN: {
       return false;
     }
     case MY_TURN: {
       return true;
     }
+    case PHERCHASE: {
+      return false;
+    }
     default: {
-      return state ;
+      return state;
     }
   }
-  return state;
 }
 
 export function tokenTaked(state = [], action) {
@@ -44,6 +78,9 @@ export function tokenTaked(state = [], action) {
 
 export function token(state = initToken, action) {
   switch (action.type) {
+    case INIT: {
+      return action.token;
+    }
     case UPDATE_TOKEN: {
       return action.tokens;
     }
@@ -51,6 +88,20 @@ export function token(state = initToken, action) {
       const tokens = state;
       tokens[action.token]--;
       return tokens;
+    }
+    case UPDATE_PHERCHASE: {
+      return action.token;
+    }
+    default: {
+      return state;
+    }
+  }
+}
+
+export function currency(state = initUserToken, action) {
+  switch (action.type) {
+    case PHERCHASE: {
+      return state[action.card.type] + 1;
     }
     default: {
       return state;
@@ -65,9 +116,38 @@ export function userToken(state = initUserToken, action) {
       tokens[action.token]++;
       return tokens;
     }
+    case UPDATE_PHERCHASE: {
+      return action.userToken;
+    }
     default: {
       return state;
     }
   }
 }
+
+export function card(state = initCard, action) {
+  switch (action.type) {
+    case INIT: {
+      return action.card;
+    }
+    case UPDATE_CARD: {
+      return action.card;
+    }
+    default: {
+      return state;
+    }
+  }
+}
+
+export function nobel(state = [], action) {
+  switch (action.type) {
+    case INIT: {
+      return action.nobel;
+    }
+    default: {
+      return state;
+    }
+  }
+}
+
 

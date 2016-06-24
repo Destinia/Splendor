@@ -63,17 +63,19 @@ exports = module.exports = function createGame() {
     };
   };
 
-  const checkout = (cards) => {
-    users[curUser].currency[cards.type] += 1;
-    const tempCards = cards;
-    const need = tempCards.price.reduce((owned, price) => {
+  const checkout = (card) => {
+    users[curUser].currency[card.type] += 1;
+    const need = card.price.reduce((owned, price) => {
       const key = price.key;
       if (key !== 'Gold') {
         const pay = price - users[curUser].currency[key];
         if (pay > 0) {
           if (pay <= users[curUser].token[key]) {
-            users[curUser].token[key] -= price;
+            users[curUser].token[key] -= pay;
+            token[key] += pay;
           } else {
+            token[key] += users[curUser].token[key];
+            users[curUser].token[key] = 0;
             return owned + (price - users[curUser].token[key]);
           }
         }
@@ -81,6 +83,7 @@ exports = module.exports = function createGame() {
       return owned;
     }, 0);
     users[curUser].token.Gold -= need;
+    token.Gold += need;
   };
 	// TODO front_end render no card(null)
   const score = (card) => {

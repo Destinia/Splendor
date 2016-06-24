@@ -7,6 +7,7 @@ export const PHERCHASE = 'PHERCHASE';
 export const CHECKOUT = 'CHECKOUT';
 export const TAKE_TOKEN = 'TAKE_TOKEN';
 export const UPDATE_USER_TOKEN = 'UPDATE_USER_TOKEN';
+export const UPDATE_PHERCHASE = 'UPDATE_PHERCHASE';
 
 export const updateToken = (tokens) => ({ type: UPDATE_TOKEN, tokens });
 
@@ -16,17 +17,13 @@ export const myTurn = () => ({ type: MY_TURN });
 
 export const updateCard = (card) => ({ type: UPDATE_CARD, card });
 
-export const init = (data) => ({ type: INIT, data: { ...data, inited: true } });
-
-export const pherchase = (card, index) => ({ type: PHERCHASE, card, index });
-
-export const checkout = (price) => ({ type: CHECKOUT, price });
+export const init = (data) => ({ type: INIT, ...data, inited: true });
 
 const updateTokenTaked = (type) => ({ type: TAKE_TOKEN, token: type });
 
 export const takeToken = (type, socket) =>
   (dispatch, getState) => {
-    const { tokenTaked, token, userToken, curPlayer } = getState();
+    const { tokenTaked, token, curPlayer } = getState();
     if (curPlayer) {
       switch (tokenTaked.length) {
         case 0:
@@ -58,6 +55,50 @@ export const takeToken = (type, socket) =>
         default:
           return;
       }
+    }
+  };
+
+const checkout = (price, userToken, currency) => {
+  const owned = userToken.reduce((own, p) => {
+    const key = p.key;
+    if (key !== 'Gold') {
+      if (p + currency[key] <= price[key]) {
+        return own + price[key] - p - currency[key];
+      }
+    }
+    return own;
+  }, 0);
+  return (owned <= userToken.Gold);
+};
+
+const updatePherchase = (card, userToken, token) =>
+  ({ type: UPDATE_PHERCHASE, card, userToken, token });
+
+export const pherchase = (card, index, socket) =>
+  (dispatch, getState) => {
+    const { userToken, currency, curPlayer, tokenTaked, token } = getState();
+    if (curPlayer && tokenTaked.length === 0 && checkout(card.price, userToken, currency)) {
+      const need = card.price.reduce((owned, price) => {
+        const key = price.key;
+        if (key !== 'Gold') {
+          const pay = price - currency[key];
+          if (pay > 0) {
+            if (pay <= userToken[key]) {
+              userToken[key] -= pay;
+              token[key] += pay;
+            } else {
+              token[key] += userToken[key];
+              userToken[key] = 0;
+              return owned + (pay - userToken[key]);
+            }
+          }
+        }
+        return owned;
+      }, 0);
+      userToken.Gold -= need;
+      token.Gold += need;
+      dispatch(updatePherchase(card, userToken, token));
+      socket.emit('card', { card, level: card.level, index });
     }
   };
 

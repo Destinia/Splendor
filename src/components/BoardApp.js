@@ -55,8 +55,7 @@ class BoardApp extends React.Component {
         mid: [initCard, initCard, initCard, initCard],
         bot: [initCard, initCard, initCard, initCard],
       },
-      nobel: {
-      },
+      nobel: [],
     };
   }
 
