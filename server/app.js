@@ -1,17 +1,12 @@
 const express = require('express');
 const path = require('path');
-const logger = require('morgan');
-const api = require('./api');
-const http = require('http');
+
 const SocketIo = require('socket.io');
 
 const app = express();
 
-app.use(logger('dev'));
+
 app.use(express.static(path.join(__dirname, '..', 'public')));
-
-
-
 
 // error handlers
 
@@ -40,10 +35,10 @@ app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
 
 /* Start server */
 
-const server = app.listen(8080,'localhost',function(){
-  console.log("API server on");
-})
+const server = app.listen(8080, 'localhost',function(){
+  console.log('API server on');
+});
 
-const io = new SocketIo(server,{path:'/api/game'});
+const io = new SocketIo(server, { path: '/api/game' });
 const socketevent = require('./socket')(io);
 

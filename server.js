@@ -4,6 +4,7 @@ const express = require('express');
 const webpack = require('webpack');
 const config = require('./webpack.config');
 const port = process.env.PORT || 3000;
+require('./server/app');
 
 const app = express();
 const compiler = webpack(config);

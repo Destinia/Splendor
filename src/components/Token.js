@@ -1,49 +1,40 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 
-import './Token.css'
-
-
-class Token extends React.Component {
-	constructor(props,context){
-		super(props,context);
-	}
-
-	render(){
-		const {token,take_token} = this.props;
-		return(
-			<div className="fullHeight">
-				<div className="token" onClick={take_token.bind(this,"Emerald")}>
-					<img src="/public/images/token/emeraude.png"/>
-					<span className="token-count">{token.Emerald}</span>
-				</div>
-				<div className="token" onClick={take_token.bind(this,"Sapphire")}>
-					<img src="/public/images/token/saphir.png"/>
-					<span className="token-count">{token.Sapphire}</span>
-				</div>
-				<div className="token" onClick={take_token.bind(this,"Ruby")}>
-					<img src="/public/images/token/rubius.png"/>
-					<span className="token-count">{token.Ruby}</span>
-				</div>
-				<div className="token" onClick={take_token.bind(this,"Diamond")}>
-					<img src="/public/images/token/diamant.png"/>
-					<span className="token-count">{token.Diamond}</span>
-				</div>
-				<div className="token" onClick={take_token.bind(this,"Agate")}>
-					<img src="/public/images/token/onyx.png"/>
-					<span className="token-count">{token.Agate}</span>
-				</div>
-				<div className="token" onClick={take_token.bind(this,"Gold")}>
-					<img src="/public/images/token/gold.png"/>
-					<span className="token-count">{token.Gold}</span>
-				</div>
-
-				<div>
-				</div>
-			</div>
+import '../css/Token.css'
 
 
+const Token = ( token,takeToken ) => 
+  (
+  <div className="fullHeight">
+    <tokenItem token={token} takeToken={takeToken} type="Emerald" />
+    <tokenItem token={token} takeToken={takeToken} type="Sapphire" />
+    <tokenItem token={token} takeToken={takeToken} type="Ruby" />
+    <tokenItem token={token} takeToken={takeToken} type="Diamond" />
+    <tokenItem token={token} takeToken={takeToken} type="Agate" />
+    <tokenItem token={token} takeToken={takeToken} type="Gold" />
+  </div>
+  );
 
-			);
-	}
-}
+const tokenItem = ({ takeToken, type, token }) => {
+  const handleClick = () => { takeToken(type); };
+  return (
+    <div className="token" onClick={handleClick}>
+      <img src={`/public/images/token/${type}.png`} role="presentation" />
+      <span className="token-count">{token.Gold}</span>
+    </div>
+    );
+};
+
+tokenItem.propTypes = {
+  token: PropTypes.object.isRequired,
+  takeToken: PropTypes.func.isRequire,
+  type: PropTypes.string.isRequire,
+};
+
+
+Token.propTypes = {
+  token: PropTypes.object.isRequired,
+  takeToken: PropTypes.func.isRequire,
+};
+
 export default Token;

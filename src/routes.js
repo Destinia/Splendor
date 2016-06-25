@@ -8,12 +8,14 @@ const {
   CounterPage,
   AnotherPage,
   NotFoundPage,
+  BoardappPage,
 } = containers;
 
 
 export default (
   <Route component={App}>
     <Route path="/" component={CounterPage} />
+    <Route path="/game" component={BoardappPage} />
     <Route path="/another" component={AnotherPage} />
     <Route path="*" component={NotFoundPage} />
   </Route>

@@ -3,11 +3,10 @@ export const YOUR_TURN = 'YOUR_TURN';
 export const MY_TURN = 'MY_TURN';
 export const UPDATE_CARD = 'UPDATE_CARD';
 export const INIT = 'INIT';
-export const PHERCHASE = 'PHERCHASE';
 export const CHECKOUT = 'CHECKOUT';
 export const TAKE_TOKEN = 'TAKE_TOKEN';
 export const UPDATE_USER_TOKEN = 'UPDATE_USER_TOKEN';
-export const UPDATE_PHERCHASE = 'UPDATE_PHERCHASE';
+export const UPDATE_PURCHASE = 'UPDATE_PURCHASE';
 
 export const updateToken = (tokens) => ({ type: UPDATE_TOKEN, tokens });
 
@@ -71,10 +70,10 @@ const checkout = (price, userToken, currency) => {
   return (owned <= userToken.Gold);
 };
 
-const updatePherchase = (card, userToken, token) =>
-  ({ type: UPDATE_PHERCHASE, card, userToken, token });
+const updatePurchase = (card, userToken, token) =>
+  ({ type: UPDATE_PURCHASE, card, userToken, token });
 
-export const pherchase = (card, index, socket) =>
+export const purchase = (card, index, socket) =>
   (dispatch, getState) => {
     const { userToken, currency, curPlayer, tokenTaked, token } = getState();
     if (curPlayer && tokenTaked.length === 0 && checkout(card.price, userToken, currency)) {
@@ -97,7 +96,7 @@ export const pherchase = (card, index, socket) =>
       }, 0);
       userToken.Gold -= need;
       token.Gold += need;
-      dispatch(updatePherchase(card, userToken, token));
+      dispatch(updatePurchase(card, userToken, token));
       socket.emit('card', { card, level: card.level, index });
     }
   };

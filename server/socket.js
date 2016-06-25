@@ -48,8 +48,8 @@ const userNames = (function () {
 }());
 
 const newGame = createGame();
-newGame.init_draw();
-console.log(newGame.get_cur_card());
+newGame.initDraw();
+console.log(newGame.getCurCard());
 
 exports = module.exports = (io) => {
   io.sockets.on('connection', (socket) => {
@@ -57,15 +57,15 @@ exports = module.exports = (io) => {
     // send the new user their name and a list of users
     socket.on('mount', () => {
       name = userNames.getGuestName();
-      newGame.add_user(socket);
+      newGame.ㄐaddUser(socket);
       console.log('new user ', name, 'mount');
       socket.emit('init', {
         name,
         players: userNames.get(),
-        cards: newGame.get_cur_card(),
-        token: newGame.get_cur_token(),
-        nobel: newGame.get_nobel(),
-        cur_player: (newGame.get_users().length === 1),
+        cards: newGame.getCurCard(),
+        token: newGame.getCurToken(),
+        nobel: newGame.getNobel(),
+        cur_player: (newGame.getUsers().length === 1),
       });
     });
 
@@ -74,19 +74,19 @@ exports = module.exports = (io) => {
       console.log('here', data);
       newGame.take_card(data.level, data.index);
       socket.emit('drawcard',
-        { cards: newGame.get_cur_card(), token: newGame.get_cur_user().token }
+        { cards: newGame.getCurCard(), token: newGame.getCurUser().token }
       );
-      socket.broadcast.emit('drawcard', { cards: newGame.get_cur_card() });
-      newGame.next_turn();
-      newGame.get_cur_user().socket.emit('yourturn');
+      socket.broadcast.emit('drawcard', { cards: newGame.getCurCard() });
+      newGame.nextTurn();
+      newGame.getCurUser().socket.emit('yourturn');
       // newGame.get_users().forEach((user)=>{user.socket.emit("test","hello");});
     });
 
     socket.on('take_token', (data) => {
-      newGame.take_token(data);
-      socket.broadcast.emit('token', { token: newGame.get_cur_token() });
-      newGame.next_turn();
-      newGame.get_cur_user().socket.emit('yourturn');
+      newGame.takeToken(data);
+      socket.broadcast.emit('token', { token: newGame.getCurToken() });
+      newGame.nextTurn();
+      newGame.getCurUser().socket.emit('yourturn');
     });
 
     // setInterval(()=>{socket.emit('test',{hey:"het"});},1000)

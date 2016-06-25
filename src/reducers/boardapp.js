@@ -3,10 +3,9 @@ import {
         YOUR_TURN,
         UPDATE_CARD,
         INIT,
-        PHERCHASE,
         TAKE_TOKEN,
         MY_TURN,
-        UPDATE_PHERCHASE,
+        UPDATE_PURCHASE,
         } from '../actions/boardapp';
 
 const initToken = { Emerald: 7, Sapphire: 7, Ruby: 7, Diamond: 7, Agate: 7, Gold: 5 };
@@ -53,7 +52,7 @@ export function curPlayer(state = false, action) {
     case MY_TURN: {
       return true;
     }
-    case PHERCHASE: {
+    case UPDATE_PURCHASE: {
       return false;
     }
     default: {
@@ -89,7 +88,7 @@ export function token(state = initToken, action) {
       tokens[action.token]--;
       return tokens;
     }
-    case UPDATE_PHERCHASE: {
+    case UPDATE_PURCHASE: {
       return action.token;
     }
     default: {
@@ -100,7 +99,7 @@ export function token(state = initToken, action) {
 
 export function currency(state = initUserToken, action) {
   switch (action.type) {
-    case PHERCHASE: {
+    case UPDATE_PURCHASE: {
       return state[action.card.type] + 1;
     }
     default: {
@@ -116,7 +115,7 @@ export function userToken(state = initUserToken, action) {
       tokens[action.token]++;
       return tokens;
     }
-    case UPDATE_PHERCHASE: {
+    case UPDATE_PURCHASE: {
       return action.userToken;
     }
     default: {
