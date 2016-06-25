@@ -22,7 +22,7 @@ exports = module.exports = function createGame() {
   let curCard = { top: [], mid: [], bot: [], nobel: [] };
 
 
-  let users = [];
+  const users = [];
 	// curUser = 4 for win
   let curUser = 0;
 
@@ -30,8 +30,8 @@ exports = module.exports = function createGame() {
   const deck = Deck;
 
   const addUser = (socket) => {
-    users = users.push(createUser(socket));
-    users.forEach((user) => { console.log(user.socket.id); });
+    users.push(createUser(socket));
+    // users.forEach((user) => { console.log(user.socket.id); });
   };
 
   const getUsers = () => users;

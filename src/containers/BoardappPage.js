@@ -2,34 +2,29 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import BoardApp from '../components/BoardApp';
 import * as BoardActions from '../actions/boardapp';
-import React, { PropTypes } from 'react';
+import React, { PropTypes, Component } from 'react';
 import io from 'socket.io-client';
+import '../css/BoardApp.css';
 
 const socket = io('localhost:8080', { path: '/api/game' });
 
+// const BoardappPage = () => (<div>test</div>);
 
-const BoardappPages = (inited) => {
-  if (inited) {
-    return (
-      <BoardApp {...this.props} socket={socket} />);
+class BoardappPage extends Component {
+
+  render() {
+    // need four players
+    if (true) {
+      return (
+        <BoardApp {...this.props} socket={socket} />);
+    }
+    return (<div className="background fix loading"></div>);
   }
-  return (<div className="background fix loading"></div>);
-};
+}
 
-BoardappPages.propTypes = {
-  inited: PropTypes.boolean.isRequired,
-  curPlayer: PropTypes.boolean.isRequired,
-  name: PropTypes.string.isRequired,
-  score: PropTypes.number.isRequired,
-  tokenTaked: PropTypes.array.isRequired,
-  token: PropTypes.object.isRequired,
-  currency: PropTypes.object.isRequired,
-  userToken: PropTypes.object.isRequired,
-  players: PropTypes.object.isRequired,
-  cards: PropTypes.object.isRequired,
-  nobel: PropTypes.array.isRequired,
-  dispatch: PropTypes.func.isRequired,
-};
+BoardappPage.propTypes = {
+  inited: PropTypes.bool.isRequired,
+}
 
 const mapStateToProps = (state) => ({
   ...state,
@@ -39,5 +34,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(BoardActions, dispatch);
 
+//export default BoardappPage;
+export default connect(mapStateToProps, mapDispatchToProps)(BoardappPage);
 
-export default connect(mapStateToProps, mapDispatchToProps)(BoardappPages);
+

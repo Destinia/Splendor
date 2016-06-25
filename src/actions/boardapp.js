@@ -58,11 +58,10 @@ export const takeToken = (type, socket) =>
   };
 
 const checkout = (price, userToken, currency) => {
-  const owned = userToken.reduce((own, p) => {
-    const key = p.key;
+  const owned = Object.keys(userToken).reduce((own, key) => {
     if (key !== 'Gold') {
-      if (p + currency[key] <= price[key]) {
-        return own + price[key] - p - currency[key];
+      if (userToken[key] + currency[key] <= price[key]) {
+        return own + price[key] - userToken[key] - currency[key];
       }
     }
     return own;

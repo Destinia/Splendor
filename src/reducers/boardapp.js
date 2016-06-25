@@ -44,6 +44,7 @@ export function name(state = '', action) {
 export function curPlayer(state = false, action) {
   switch (action.type) {
     case INIT: {
+      console.log(action.curPlayer);
       return action.curPlayer;
     }
     case YOUR_TURN: {
@@ -124,13 +125,13 @@ export function userToken(state = initUserToken, action) {
   }
 }
 
-export function card(state = initCard, action) {
+export function cards(state = initCard, action) {
   switch (action.type) {
     case INIT: {
-      return action.card;
+      return action.cards;
     }
     case UPDATE_CARD: {
-      return action.card;
+      return action.cards;
     }
     default: {
       return state;

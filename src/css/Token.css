@@ -1,11 +1,11 @@
 .fullHeight {
-	height:80%;
-	margin-right: auto;
-	margin-left: auto;
-	max-height: initial;
-	width: 100%;
-	top:20px;
-	margin-top: 50px;
+  height:80%;
+  margin-right: auto;
+  margin-left: auto;
+  max-height: initial;
+  width: 100%;
+  top:20px;
+  margin-top: 50px;
 
 }
 
@@ -13,6 +13,11 @@
 div.token {
   opacity: 1;
   margin-bottom: 5px;
+  height: 16%;
+}
+
+div.token img {
+  height: 100%;
 }
 div.two {
   top: -600px;
@@ -24,12 +29,12 @@ div.three {
 }
 
 .fullHeight img {
-	width:50%;
-	height: 50%;
+  width:50%;
+  height: 50%;
 }
 
 .token-count {
-	margin-left:20px;
-	color:#FFF;
-	font-size: 25px;
+  margin-left:20px;
+  color:#FFF;
+  font-size: 25px;
 }

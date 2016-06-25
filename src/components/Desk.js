@@ -7,13 +7,13 @@ class Desk extends Component {
   createCard(card, index) {
     const { purchase, userToken, currency } = this.props;
     const checkout = (price) => {
-      const owned = userToken.reduce((own, p) => {
-        const key = p.key;
+      const owned = Object.keys(userToken).reduce((own, key) => {
         if (key !== 'Gold') {
-          if (p + currency[key] <= price[key]) {
-            return own + price[key] - p - currency[key];
+          if (userToken[key] + currency[key] <= price[key]) {
+            return own + price[key] - userToken[key] - currency[key];
           }
         }
+        console.log(price,own);
         return own;
       }, 0);
       return (owned <= userToken.Gold);

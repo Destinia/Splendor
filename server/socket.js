@@ -1,24 +1,25 @@
 // Keep track of which names are used so that there are no duplicates
 const createGame = require('./game.js');
 
-const userNames = (function () {
-  const names = {};
+var userNames = (function () {
+  var names = {};
 
-  const claim = (name) => {
+  var claim = function (name) {
     if (!name || names[name]) {
       return false;
+    } else {
+      names[name] = true;
+      return true;
     }
-    names[name] = true;
-    return true;
   };
 
   // find the lowest unused "guest" name and claim it
-  const getGuestName = () => {
-    let name;
-    let nextUserId = 1;
+  var getGuestName = function () {
+    var name,
+      nextUserId = 1;
 
     do {
-      name = `Guest  + ${nextUserId}`;
+      name = 'Guest ' + nextUserId;
       nextUserId += 1;
     } while (!claim(name));
 
@@ -26,24 +27,26 @@ const userNames = (function () {
   };
 
   // serialize claimed names as an array
-  const get = () => {
-    const res = [];
-    names.map((user) => { res.push(user); return user; });
+  var get = function () {
+    var res = [];
+    for (user in names) {
+      res.push(user);
+    }
 
     return res;
   };
 
-  const free = (name) => {
+  var free = function (name) {
     if (names[name]) {
       delete names[name];
     }
   };
 
   return {
-    claim,
-    free,
-    get,
-    getGuestName,
+    claim: claim,
+    free: free,
+    get: get,
+    getGuestName: getGuestName
   };
 }());
 
@@ -57,7 +60,7 @@ exports = module.exports = (io) => {
     // send the new user their name and a list of users
     socket.on('mount', () => {
       name = userNames.getGuestName();
-      newGame.ㄐaddUser(socket);
+      newGame.addUser(socket);
       console.log('new user ', name, 'mount');
       socket.emit('init', {
         name,
@@ -65,14 +68,14 @@ exports = module.exports = (io) => {
         cards: newGame.getCurCard(),
         token: newGame.getCurToken(),
         nobel: newGame.getNobel(),
-        cur_player: (newGame.getUsers().length === 1),
+        curPlayer: (newGame.getUsers().length === 1),
       });
     });
 
 
     socket.on('card', (data) => {
       console.log('here', data);
-      newGame.take_card(data.level, data.index);
+      newGame.takeCard(data.level, data.index);
       socket.emit('drawcard',
         { cards: newGame.getCurCard(), token: newGame.getCurUser().token }
       );

@@ -8,7 +8,7 @@
 
 .loading {
 	background-size: 100% 100%;
-	background-image: url(/public/images/splendor-loading-screen.png)
+	background-image: url(/public/images/splendor-loading-screen.png);
 }
 
 .background h1 {

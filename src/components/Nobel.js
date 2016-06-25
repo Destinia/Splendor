@@ -4,7 +4,7 @@ import '../css/cards.css';
 
 
 class Nobel extends Component {
-  reateCard(card) {
+  createCard(card) {
     const renderToken = (token) => {
       if (card.price[token] !== 0) {
         return (

@@ -15,7 +15,7 @@ const Hand = ({ userToken, currency }) =>
         <span>{currency.Emerald}</span>
       </div>
       <div className="token">
-        <img src="/public/images/token/emeraude.png" role="presentation" />
+        <img src="/public/images/token/Emerald.png" role="presentation" />
         <span>{userToken.Emerald}</span>
       </div>
     </div>
@@ -25,7 +25,7 @@ const Hand = ({ userToken, currency }) =>
         <span>{currency.Sapphire}</span>
       </div>
       <div className="token">
-        <img src="/public/images/token/saphir.png" role="presentation" />
+        <img src="/public/images/token/Sapphire.png" role="presentation" />
         <span>{userToken.Sapphire}</span>
       </div>
     </div>
@@ -35,7 +35,7 @@ const Hand = ({ userToken, currency }) =>
         <span>{currency.Ruby}</span>
       </div>
       <div className="token">
-        <img src="/public/images/token/rubius.png" role="presentation" />
+        <img src="/public/images/token/Ruby.png" role="presentation" />
         <span>{userToken.Ruby}</span>
       </div>
     </div>
@@ -45,7 +45,7 @@ const Hand = ({ userToken, currency }) =>
         <span>{currency.Diamond}</span>
       </div>
       <div className="token">
-        <img src="/public/images/token/diamant.png" role="presentation" />
+        <img src="/public/images/token/Diamond.png" role="presentation" />
         <span>{userToken.Diamond}</span>
       </div>
     </div>
@@ -55,7 +55,7 @@ const Hand = ({ userToken, currency }) =>
         <span>{currency.Agate}</span>
       </div>
       <div className="token">
-        <img src="/public/images/token/onyx.png" role="presentation" />
+        <img src="/public/images/token/Agate.png" role="presentation" />
         <span>{userToken.Agate}</span>
       </div>
     </div>
@@ -65,7 +65,7 @@ const Hand = ({ userToken, currency }) =>
         <span>{currency.Gold}</span>
       </div>
       <div className="token">
-        <img src="/public/images/token/gold.png" role="presentation" />
+        <img src="/public/images/token/Gold.png" role="presentation" />
         <span>{userToken.Gold}</span>
       </div>
     </div>
