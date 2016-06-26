@@ -32,3 +32,13 @@
 .fix {
 	height: 100vh;
 }
+
+.enemy-region {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.cards-region {
+	padding-right: 10px;
+	padding-left: 50px;
+}

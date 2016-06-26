@@ -3,6 +3,7 @@ import Desk from './Desk';
 import Token from './Token';
 import Hand from './Hand';
 import Nobel from './Nobel';
+import Enemy from './Enemy';
 
 class BoardApp extends Component {
 
@@ -15,20 +16,21 @@ class BoardApp extends Component {
     socket.on('yourturn', yourTurn);
     socket.on('token', (data) => { updateToken(data.token); });
   }
+  // <button>{(curPlayer) ? 'me' : 'others'}</button>
 
   render() {
-    const { purchase, cards, nobel, token, takeToken, userToken, currency, curPlayer } = this.props;
+    const { purchase, cards, nobel, token, takeToken, userToken, currency, curPlayer,players } = this.props;
     return (
       <div className="background">
         <div className="container-fluid fix">
           <div className="row desk-region">
-            <div className="col-sm-2">
-              <button>{(curPlayer) ? 'me' : 'others'}</button>
+            <div className="col-sm-3 enemy-region">
+              <Enemy players={players} />
             </div>
-            <div className="col-sm-5">
+            <div className="col-sm-5 cards-region">
               <Desk purchase={purchase} cards={cards} userToken={userToken} currency={currency} />
             </div>
-            <div className="col-sm-3">
+            <div className="col-sm-2">
               <Nobel nobel={nobel} />
             </div>
             <div className="col-sm-2">

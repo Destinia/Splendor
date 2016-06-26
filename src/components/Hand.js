@@ -11,7 +11,7 @@ const Hand = ({ userToken, currency }) =>
     </div>
     <div className="col-sm-1 gem first">
       <div className="currency">
-        <img src="/public/images/gems/emeraude.png" role="presentation" />
+        <img src="/public/images/gems/Emerald.png" role="presentation" />
         <span>{currency.Emerald}</span>
       </div>
       <div className="token">
@@ -21,7 +21,7 @@ const Hand = ({ userToken, currency }) =>
     </div>
     <div className="col-sm-1 gem">
       <div className="currency">
-        <img src="/public/images/gems/saphir.png" role="presentation" />
+        <img src="/public/images/gems/Sapphire.png" role="presentation" />
         <span>{currency.Sapphire}</span>
       </div>
       <div className="token">
@@ -31,7 +31,7 @@ const Hand = ({ userToken, currency }) =>
     </div>
     <div className="col-sm-1 gem">
       <div className="currency">
-        <img src="/public/images/gems/rubis.png" role="presentation" />
+        <img src="/public/images/gems/Ruby.png" role="presentation" />
         <span>{currency.Ruby}</span>
       </div>
       <div className="token">
@@ -41,7 +41,7 @@ const Hand = ({ userToken, currency }) =>
     </div>
     <div className="col-sm-1 gem">
       <div className="currency">
-        <img src="/public/images/gems/diamant.png" role="presentation" />
+        <img src="/public/images/gems/Diamond.png" role="presentation" />
         <span>{currency.Diamond}</span>
       </div>
       <div className="token">
@@ -51,7 +51,7 @@ const Hand = ({ userToken, currency }) =>
     </div>
     <div className="col-sm-1 gem">
       <div className="currency">
-        <img src="/public/images/gems/onyx.png" role="presentation" />
+        <img src="/public/images/gems/Agate.png" role="presentation" />
         <span>{currency.Agate}</span>
       </div>
       <div className="token">
@@ -61,7 +61,7 @@ const Hand = ({ userToken, currency }) =>
     </div>
     <div className="col-sm-1 gem">
       <div className="currency">
-        <img src="/public/images/gems/or.png" role="presentation" />
+        <img src="/public/images/gems/Gold.png" role="presentation" />
         <span>{currency.Gold}</span>
       </div>
       <div className="token">

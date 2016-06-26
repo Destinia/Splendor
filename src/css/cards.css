@@ -16,6 +16,7 @@ origin
     height: 4.6em;
 */
 
+
 .playingCards .card {
     display: inline-block;
     width: 3.3em;
@@ -40,6 +41,7 @@ origin
 
 .playingCards .nobel {
     height: 4.0em;
+    width: 2.5em;
     background-image: url(/public/images/nobel-background.jpg);
 }
 
