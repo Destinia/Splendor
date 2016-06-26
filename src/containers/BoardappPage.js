@@ -22,9 +22,7 @@ class BoardappPage extends Component {
   }
 }
 
-BoardappPage.propTypes = {
-  inited: PropTypes.bool.isRequired,
-};
+
 
 const mapStateToProps = (state) => ({
   ...state,

@@ -10,7 +10,7 @@ class BoardApp extends Component {
   componentDidMount() {
     const { socket, init, updateCard, yourTurn, updateToken } = this.props;
     socket.emit('mount', {});
-    socket.on('init', (data) => { console.log(data);init(data); });
+    socket.on('init', (data) => { init(data); });
     socket.on('drawcard', (data) => { updateCard(data.cards); updateToken(data.token); });
     socket.on('test', (data) => { console.log(data); });
     socket.on('yourturn', yourTurn);
@@ -19,13 +19,14 @@ class BoardApp extends Component {
   // <button>{(curPlayer) ? 'me' : 'others'}</button>
 
   render() {
-    const { purchase, cards, nobel, token, takeToken, userToken, currency, curPlayer,players } = this.props;
+    const { purchase, cards, nobel, token, takeToken, userToken, currency,
+      curPlayer, players, clickEnemy } = this.props;
     return (
       <div className="background">
         <div className="container-fluid fix">
           <div className="row desk-region">
             <div className="col-sm-3 enemy-region">
-              <Enemy players={players} />
+              <Enemy players={players} clickEnemy={clickEnemy} />
             </div>
             <div className="col-sm-5 cards-region">
               <Desk purchase={purchase} cards={cards} userToken={userToken} currency={currency} />
@@ -68,6 +69,7 @@ BoardApp.propTypes = {
   init: PropTypes.func.isRequired,
   takeToken: PropTypes.func.isRequired,
   purchase: PropTypes.func.isRequired,
+  clickEnemy: PropTypes.func.isRequired,
 };
 
 export default BoardApp;

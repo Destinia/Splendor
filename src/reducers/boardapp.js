@@ -6,11 +6,14 @@ import {
         TAKE_TOKEN,
         MY_TURN,
         UPDATE_PURCHASE,
+        CLICK_ENEMY,
         } from '../actions/boardapp';
 
 const initToken = { Emerald: 7, Sapphire: 7, Ruby: 7, Diamond: 7, Agate: 7, Gold: 5 };
 const initUserToken = { Emerald: 0, Sapphire: 0, Ruby: 0, Diamond: 0, Agate: 0, Gold: 0 };
+const initCurToken = { Emerald: 0, Sapphire: 0, Ruby: 0, Diamond: 0, Agate: 0, Gold: 0 };
 const initCard = { top: [], mid: [], bot: [] };
+
 
 export function inited(state = false, action) {
   if (action.type === INIT) {
@@ -19,10 +22,20 @@ export function inited(state = false, action) {
   return false;
 }
 
-export function players(state = {}, action) {
+export function players(state = [], action) {
   switch (action.type) {
     case INIT: {
+      //return state
+      // temp test
       return action.players;
+    }
+    case CLICK_ENEMY: {
+      return state.map((player, index) => {
+        if (index !== action.index) {
+          return player;
+        }
+        return { ...player, visible: !player.visible };
+      });
     }
     default: {
       return state;
@@ -85,6 +98,13 @@ export function token(state = initToken, action) {
       return action.tokens;
     }
     case TAKE_TOKEN: {
+      /* must be modify
+      return Object.keys(state).map((key) => {
+        if (key !== action.token) {
+          return
+        }
+      });
+      */
       const tokens = state;
       tokens[action.token]--;
       return tokens;
@@ -98,7 +118,7 @@ export function token(state = initToken, action) {
   }
 }
 
-export function currency(state = initUserToken, action) {
+export function currency(state = initCurToken, action) {
   switch (action.type) {
     case UPDATE_PURCHASE: {
       return state[action.card.type] + 1;
@@ -149,5 +169,3 @@ export function nobel(state = [], action) {
     }
   }
 }
-
-

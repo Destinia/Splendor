@@ -7,6 +7,7 @@ export const CHECKOUT = 'CHECKOUT';
 export const TAKE_TOKEN = 'TAKE_TOKEN';
 export const UPDATE_USER_TOKEN = 'UPDATE_USER_TOKEN';
 export const UPDATE_PURCHASE = 'UPDATE_PURCHASE';
+export const CLICK_ENEMY = 'CLICK_ENEMY';
 
 export const updateToken = (tokens) => ({ type: UPDATE_TOKEN, tokens });
 
@@ -17,6 +18,8 @@ export const myTurn = () => ({ type: MY_TURN });
 export const updateCard = (card) => ({ type: UPDATE_CARD, card });
 
 export const init = (data) => ({ type: INIT, ...data, inited: true });
+
+export const clickEnemy = (index) => ({ type: CLICK_ENEMY, index });
 
 const updateTokenTaked = (type) => ({ type: TAKE_TOKEN, token: type });
 

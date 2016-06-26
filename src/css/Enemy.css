@@ -9,6 +9,7 @@
 
 }
 
+
 .enemy div.player {
   opacity: 1;
   margin-bottom: 5px;
@@ -18,7 +19,7 @@
 .enemy .player .img-region {
   width:30%;
   margin-right: 10px;
-  float:left; 
+  float:left;
 }
 
 .token-row {
@@ -27,6 +28,7 @@
 
 .enemy div.player .img-region img {
   width: 100%;
+  opacity: 1;
 }
 
 .playertToken {
@@ -34,6 +36,11 @@
   height:33%;
   font-size: 25px;
 }
+
+.enemy div.player .invisible {
+  opacity: 0;
+}
+
 
 .enemy div.player .token-region .playerToken img {
   width: 8%;

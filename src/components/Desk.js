@@ -13,7 +13,6 @@ class Desk extends Component {
             return own + price[key] - userToken[key] - currency[key];
           }
         }
-        console.log(price,own);
         return own;
       }, 0);
       return (owned <= userToken.Gold);
