@@ -22,8 +22,6 @@ export const myTurn = () => ({ type: MY_TURN });
 
 export const updateCard = (card) => ({ type: UPDATE_CARD, card });
 
-export const init = (data) => ({ type: INIT, ...data, inited: true });
-
 export const clickEnemy = (index) => ({ type: CLICK_ENEMY, index });
 
 export const full = () => ({ type: FULL });
@@ -31,6 +29,17 @@ export const full = () => ({ type: FULL });
 export const updatePlayers = (players) => ({ type: UPDATE_PLAYERS, players });
 
 const updateAddPlayer = (players) => ({ type: ADD_PLAYER, players });
+
+export const init = (data) =>
+  (dispatch, getState) => {
+    const { order } = getState();
+    dispatch({ type: INIT, ...data,
+      players: data.players.filter((player) => (player.id !== order)), inited: true });
+    if (data.players[order].curPlayer) {
+      dispatch(myTurn());
+    }
+  };
+
 
 export const addPlayer = (players) =>
   (dispatch, getState) => {

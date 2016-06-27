@@ -27,7 +27,7 @@ exports = module.exports = function createGame(id) {
   const curToken = { Emerald: 7, Sapphire: 7, Ruby: 7, Diamond: 7, Agate: 7, Gold: 5 };
   const deck = Deck;
   const createUser = () => (
-    { id: users.length, token: token(), score: 0, currency: token(),
+    { id: users.length, token: token(), score: 0, currency: token(), name: 'test',
     imgSrc: `/public/images/portrait/portrait${users.length + 1}.jpg` }
   );
   const getRoomId = () => roomId;
@@ -59,8 +59,9 @@ exports = module.exports = function createGame(id) {
     return target;
   };
 
-  const initDraw = () => {
+  const init = () => {
     start = true;
+    curUser = Math.floor(Math.random() * 4);
     curCard = {
       top: [drawCard('top'), drawCard('top'), drawCard('top'), drawCard('top')],
       mid: [drawCard('mid'), drawCard('mid'), drawCard('mid'), drawCard('mid')],
@@ -124,7 +125,7 @@ exports = module.exports = function createGame(id) {
 	// do server need to know price?
 	// return method
   return {
-    initDraw,
+    init,
     nextTurn,
     getUsers,
     getCurUser,

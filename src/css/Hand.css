@@ -40,6 +40,14 @@
 	opacity: 0.5
 }
 
+.user-img-region span.score {
+	position: absolute;
+	bottom:20%;
+	left: 60%;
+	font-size: 1.5vw;
+	color: white;
+}
+
 .user-region {
 	position: absolute;
 	height: inherit;

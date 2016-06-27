@@ -9,6 +9,7 @@ const Hand = ({ userToken, currency, userData, curPlayer, returnToken }) => {
     <div className="row user-region">
       <div className="col-sm-2 user-img-region">
         <img src={userData.imgSrc} role="presentation" className={(curPlayer) ? '' : 'transparent'} />
+        <span className="score">{`score: ${3}`}</span>
       </div>
       <div className="col-sm-1 gem first">
         <div className="currency">

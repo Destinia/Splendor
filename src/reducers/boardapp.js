@@ -45,6 +45,11 @@ export function roomId(state = 'test', action) {
 
 export function players(state = [], action) {
   switch (action.type) {
+    case INIT: {
+      return action.players.map((player) =>
+        ({ ...player, visible: true })
+      );
+    }
     case CLICK_ENEMY: {
       return state.map((player, index) => {
         if (index !== action.index) {

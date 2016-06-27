@@ -8,7 +8,7 @@ const Enemy = ({ players, clickEnemy }) => {
 
   const createEnemy = (enemy, index) => {
     const handleOnclick = () => { clickEnemy(index); };
-    return (<SinglePlayer enemy={enemy} handleOnclick={handleOnclick} />);
+    return (<SinglePlayer enemy={enemy} handleOnclick={handleOnclick} index={index} />);
   };
 
   return (

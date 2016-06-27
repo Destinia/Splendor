@@ -1,12 +1,14 @@
 import React, { Component, PropTypes } from 'react';
 
 import '../css/Enemy.css';
-const SinglePlayer = ({ enemy, handleOnclick }) => {
+const SinglePlayer = ({ enemy, handleOnclick, index }) => {
   const display = (enemy.visible) ? 'token-region' : 'token-region invisible';
   return (
     <div className="player">
-      <div className="img-region" onClick={handleOnclick}>
+      <div className={`img-region user${index}`} onClick={handleOnclick}>
         <img src={enemy.imgSrc} role="presentation" className={(enemy.curPlayer ? '' : 'transparent')} />
+        <h2 className="name">{enemy.name}</h2>
+        <h2 className="score">{1}</h2>
       </div>
       <div className={display}>
         <div className="token-row">
