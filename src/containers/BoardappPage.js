@@ -36,5 +36,3 @@ const mapDispatchToProps = (dispatch) =>
 
 //export default BoardappPage;
 export default connect(mapStateToProps, mapDispatchToProps)(BoardappPage);
-
-

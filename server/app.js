@@ -35,10 +35,12 @@ app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
 
 /* Start server */
 
-const server = app.listen(8080, 'localhost',function(){
+const server = app.listen(8080, 'localhost', function(){
   console.log('API server on');
 });
 
 const io = new SocketIo(server, { path: '/api/game' });
 const socketevent = require('./socket')(io);
 
+const lobbyIo = new SocketIo(server, { path: '/api/lobby' });
+const lobbyEvent = require('./LobbySocket.js')(lobbyIo);
