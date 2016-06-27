@@ -3,13 +3,13 @@ import React, { PropTypes } from 'react';
 import '../css/Hand.css';
 
 
-const Hand = ({ userToken, currency, userData, curPlayer, returnToken }) => {
+const Hand = ({ userToken, currency, userData, curPlayer, returnToken, score }) => {
   const handleClick = (type) => () => returnToken(type);
   return (
     <div className="row user-region">
       <div className="col-sm-2 user-img-region">
         <img src={userData.imgSrc} role="presentation" className={(curPlayer) ? '' : 'transparent'} />
-        <span className="score">{`score: ${3}`}</span>
+        <span className="score">{`score: ${score}`}</span>
       </div>
       <div className="col-sm-1 gem first">
         <div className="currency">
@@ -84,5 +84,6 @@ Hand.propTypes = {
   userData: PropTypes.object.isRequired,
   curPlayer: PropTypes.bool.isRequired,
   returnToken: PropTypes.func.isRequired,
+  score: PropTypes.number.isRequired,
 };
 export default Hand;

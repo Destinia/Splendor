@@ -5,7 +5,7 @@ import '../css/cards.css';
 class Desk extends Component {
 
   createCard(card, index) {
-    const { purchase, userToken, currency } = this.props;
+    const { purchase, userToken, currency, socket } = this.props;
     const checkout = (price) => {
       const owned = Object.keys(userToken).reduce((own, key) => {
         if (key !== 'Gold') {
@@ -29,7 +29,7 @@ class Desk extends Component {
       }
       return;
     };
-    const purchaseCard = () => { purchase(card, index); };
+    const purchaseCard = () => { purchase(card, index, socket); };
     return (
       <li>
         <a className={afforded} onClick={purchaseCard}>
@@ -69,6 +69,7 @@ Desk.propTypes = {
   purchase: PropTypes.func.isRequired,
   userToken: PropTypes.object.isRequired,
   currency: PropTypes.object.isRequired,
+  socket: PropTypes.object.isRequired,
 };
 
 export default Desk;

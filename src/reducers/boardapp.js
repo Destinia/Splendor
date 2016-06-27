@@ -12,6 +12,7 @@ import {
         FULL,
         ADD_PLAYER,
         UPDATE_USERDATA,
+        NEXT_TURN,
         } from '../actions/boardapp';
 
 const initToken = { Emerald: 0, Sapphire: 0, Ruby: 0, Diamond: 0, Agate: 0, Gold: 0 };
@@ -66,6 +67,11 @@ export function players(state = [], action) {
     case ADD_PLAYER: {
       return action.players.map((player) =>
         ({ ...player, visible: true })
+      );
+    }
+    case NEXT_TURN: {
+      return action.players.map((player, index) =>
+        ({ ...player, visible: state[index].visible })
       );
     }
     default: {
@@ -137,6 +143,9 @@ export function token(state = initToken, action) {
     case UPDATE_PURCHASE: {
       return action.token;
     }
+    case NEXT_TURN: {
+      return action.token;
+    }
     default: {
       return state;
     }
@@ -179,6 +188,12 @@ export function cards(state = initCard, action) {
     case UPDATE_CARD: {
       return action.cards;
     }
+    case NEXT_TURN: {
+      if (action.cards) {
+        return action.cards;
+      }
+      return state;
+    }
     default: {
       return state;
     }
@@ -190,6 +205,12 @@ export function nobel(state = [], action) {
     case INIT: {
       return action.nobel;
     }
+    case NEXT_TURN: {
+      if (action.nobel) {
+        return action.nobel;
+      }
+      return state;
+    }
     default: {
       return state;
     }
@@ -200,6 +221,17 @@ export function order(state = 0, action) {
   switch (action.type) {
     case UPDATE_USERDATA: {
       return action.order;
+    }
+    default: {
+      return state;
+    }
+  }
+}
+
+export function score(state = 0, action) {
+  switch (action.type) {
+    case UPDATE_PURCHASE: {
+      return state + action.card.score;
     }
     default: {
       return state;

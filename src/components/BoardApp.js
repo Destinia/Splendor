@@ -8,13 +8,13 @@ import Enemy from './Enemy';
 class BoardApp extends Component {
 
   componentDidMount() {
-    const { socket, init, updateCard, myTurn, updateToken, roomId, full, updatePlayers, addPlayer, updateUserData } = this.props;
+    const { socket, init, myTurn, updateToken, roomId, full, addPlayer, updateUserData, nextTurn } = this.props;
     console.log(roomId);
     // socket.join(roomId);
     socket.emit('mount', roomId);
-    socket.on('full', full);
+    socket.on('full', full);// route back to lobby
     socket.on('init', (data) => { init(data); });
-    socket.on('drawcard', (data) => { updateCard(data.cards); updateToken(data.token); });
+    socket.on('nextTurn', (data) => { nextTurn(data); });
     socket.on('test', (data) => { console.log(data); });
     socket.on('yourturn', myTurn);
     socket.on('token', (data) => { updateToken(data.token); });
@@ -28,7 +28,7 @@ class BoardApp extends Component {
 
   render() {
     const { purchase, cards, nobel, token, takeToken, userToken, currency,
-      curPlayer, players, clickEnemy, userData, returnToken } = this.props;
+      curPlayer, players, clickEnemy, userData, returnToken, socket, score } = this.props;
     return (
       <div className="background">
         <div className="container-fluid fix">
@@ -37,19 +37,22 @@ class BoardApp extends Component {
               <Enemy players={players} clickEnemy={clickEnemy} />
             </div>
             <div className="col-sm-5 cards-region">
-              <Desk purchase={purchase} cards={cards} userToken={userToken} currency={currency} />
+              <Desk
+                purchase={purchase} cards={cards} userToken={userToken}
+                currency={currency} socket={socket}
+              />
             </div>
             <div className="col-sm-2">
               <Nobel nobel={nobel} />
             </div>
             <div className="col-sm-2">
-              <Token token={token} takeToken={takeToken} />
+              <Token token={token} takeToken={takeToken} socket={socket} />
             </div>
           </div>
           <div className="row user-region">
             <div className="container-fluid">
               <Hand
-                currency={currency} userToken={userToken}
+                currency={currency} userToken={userToken} score={score}
                 userData={userData} curPlayer={curPlayer} returnToken={returnToken}
               />
             </div>
@@ -75,7 +78,6 @@ BoardApp.propTypes = {
   socket: PropTypes.object.isRequired,
   updateToken: PropTypes.func.isRequired,
   myTurn: PropTypes.func.isRequired,
-  myTurn: PropTypes.func.isRequired,
   updateCard: PropTypes.func.isRequired,
   init: PropTypes.func.isRequired,
   takeToken: PropTypes.func.isRequired,
@@ -88,6 +90,7 @@ BoardApp.propTypes = {
   updatePlayers: PropTypes.func.isRequired,
   addPlayer: PropTypes.func.isRequired,
   updateUserData: PropTypes.func.isRequired,
+  nextTurn: PropTypes.func.isRequired,
 };
 
 export default BoardApp;

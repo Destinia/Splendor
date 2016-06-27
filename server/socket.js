@@ -53,7 +53,7 @@ exports = module.exports = (io) => {
 
 
     socket.on('card', (data, id) => {
-      console.log('here', data);
+      console.log('purchase card', data);
       const newGame = GameList[id];
       newGame.takeCard(data.level, data.index);
       socket.emit('drawcard',
@@ -68,10 +68,13 @@ exports = module.exports = (io) => {
     });
 
     socket.on('takeToken', (data, id) => {
+      console.log('take token', data);
       const newGame = GameList[id];
       newGame.takeToken(data);
-      socket.broadcast.emit('token', { token: newGame.getCurToken(), players: newGame.getUsers() });
       newGame.nextTurn();
+      socket.emit('nextTurn', { token: newGame.getCurToken(), players: newGame.getUsers() });
+      socket.broadcast.to(id).emit('nextTurn',
+        { token: newGame.getCurToken(), players: newGame.getUsers() });
       newGame.getCurSocket().emit('yourturn');
     });
 

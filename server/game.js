@@ -110,6 +110,8 @@ exports = module.exports = function createGame(id) {
     } else if (types.length === 1) {
       curToken[types[0]] -= 2;
       users[curUser].token[types[0]] += 2;
+    } else {
+      console.log('error', types);
     }
   };
   const takeCard = (pos, index) => {
