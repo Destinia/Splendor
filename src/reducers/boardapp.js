@@ -82,10 +82,6 @@ export function userData(state = initUserData, action) {
 
 export function curPlayer(state = false, action) {
   switch (action.type) {
-    case INIT: {
-      console.log(action.curPlayer);
-      return action.curPlayer;
-    }
     case YOUR_TURN: {
       return false;
     }

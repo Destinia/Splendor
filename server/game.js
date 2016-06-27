@@ -34,6 +34,7 @@ exports = module.exports = function createGame(id) {
   const addUser = (socket) => {
     users.push(createUser());
     sockets.push(socket);
+    console.log(users.length, 'player mount');
     // users.forEach((user) => { console.log(user.socket.id); });
   };
   const getCurSocket = () => sockets[curUser];

@@ -64,8 +64,7 @@ exports = module.exports = (io) => {
         GameList[roomId] = createGame(roomId);
         console.log('test');
       }
-      const newGame = GameList[roomId];
-      console.log(GameList);     
+      const newGame = GameList[roomId];   
       switch (GameList[roomId].getUsers().length) {
         case 4: {
           socket.emit('full');
