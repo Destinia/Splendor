@@ -11,9 +11,10 @@ import {
         UPDATE_PLAYERS,
         FULL,
         ADD_PLAYER,
+        UPDATE_USERDATA,
         } from '../actions/boardapp';
 
-const initToken = { Emerald: 7, Sapphire: 7, Ruby: 7, Diamond: 7, Agate: 7, Gold: 5 };
+const initToken = { Emerald: 0, Sapphire: 0, Ruby: 0, Diamond: 0, Agate: 0, Gold: 0 };
 const initUserToken = { Emerald: 0, Sapphire: 0, Ruby: 0, Diamond: 0, Agate: 0, Gold: 0 };
 const initCurToken = { Emerald: 0, Sapphire: 0, Ruby: 0, Diamond: 0, Agate: 0, Gold: 0 };
 const initCard = { top: [], mid: [], bot: [] };
@@ -44,13 +45,6 @@ export function roomId(state = 'test', action) {
 
 export function players(state = [], action) {
   switch (action.type) {
-    case INIT: {
-      // return state
-      // temp test
-      return action.players.map((player) =>
-        ({ ...player, visible: false, curPlayer: false })
-      );
-    }
     case CLICK_ENEMY: {
       return state.map((player, index) => {
         if (index !== action.index) {
@@ -77,7 +71,7 @@ export function players(state = [], action) {
 
 export function userData(state = initUserData, action) {
   switch (action.type) {
-    case INIT: {
+    case UPDATE_USERDATA: {
       return action.userData;
     }
     default: {
@@ -194,6 +188,17 @@ export function nobel(state = [], action) {
   switch (action.type) {
     case INIT: {
       return action.nobel;
+    }
+    default: {
+      return state;
+    }
+  }
+}
+
+export function order(state = 0, action) {
+  switch (action.type) {
+    case UPDATE_USERDATA: {
+      return action.order;
     }
     default: {
       return state;

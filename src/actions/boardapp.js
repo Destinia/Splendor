@@ -12,6 +12,7 @@ export const CLICK_ENEMY = 'CLICK_ENEMY';
 export const UPDATE_PLAYERS = 'UPDATE_PLAYERS';
 export const FULL = 'FULL';
 export const ADD_PLAYER = 'ADD_PLAYER';
+export const UPDATE_USERDATA = 'UPDATE_USERDATA';
 
 export const updateToken = (tokens) => ({ type: UPDATE_TOKEN, tokens });
 
@@ -29,12 +30,20 @@ export const full = () => ({ type: FULL });
 
 export const updatePlayers = (players) => ({ type: UPDATE_PLAYERS, players });
 
-export const addPlayer = (players) => ({ type: ADD_PLAYER, players });
+const updateAddPlayer = (players) => ({ type: ADD_PLAYER, players });
+
+export const addPlayer = (players) =>
+  (dispatch, getState) => {
+    const { order } = getState();
+    dispatch(updateAddPlayer(players.filter((player, index) => (order !== index))));
+  };
+
+export const updateUserData = (data) => ({ type: UPDATE_USERDATA, ...data });
 
 export const refreshPlayer = (players) =>
   (dispatch, getState) => {
     const { id } = getState();
-    dispatch(updatePlayers(players.filter((player, index) => (index !== id))));
+    dispatch(updatePlayers(players.filter((player) => (player.id !== id))));
   };
 
 const updateTokenTaked = (type) => ({ type: TAKE_TOKEN, token: type });

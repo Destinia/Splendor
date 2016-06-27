@@ -68,42 +68,35 @@ exports = module.exports = (io) => {
       console.log(GameList);     
       switch (GameList[roomId].getUsers().length) {
         case 4: {
-          //socket.emit('full');
+          socket.emit('full');
           break;
         }
 
         case 3: {
           newGame.addUser(socket);
+          socket.emit('onTheTable', newGame.getUsers());
+          socket.broadcast.to(roomId).emit('addUser', newGame.getUsers());
           newGame.initDraw();
           socket.emit('init', {
-            players: newGame.getUsers(),
             cards: newGame.getCurCard(),
             token: newGame.getCurToken(),
             nobel: newGame.getNobel(),
-            curPlayer: false,
-            userData: { name, imgSrc: '/public/images/portrait/portrait2.jpg',
-            id: newGame.getUsers().length - 1 },
           });
           socket.broadcast.to(roomId).emit('init', {
-            players: newGame.getUsers(),
             cards: newGame.getCurCard(),
             token: newGame.getCurToken(),
             nobel: newGame.getNobel(),
-            curPlayer: false,
-            userData: { name, imgSrc: '/public/images/portrait/portrait2.jpg',
-            id: newGame.getUsers().length - 1 },
           });
-          newGame.getCurSocket.emit('yourturn');
+          newGame.getCurSocket().emit('yourturn');
           break;
         }
         default : {
           console.log('this.case');
           newGame.addUser(socket);
-          socket.emit('addUser', newGame.getUsers());
+          socket.emit('onTheTable', newGame.getUsers());
           socket.broadcast.to(roomId).emit('addUser', newGame.getUsers());
         }
       }
-      newGame.addUser(socket);
       console.log('new user ', name, 'mount');
     });
 

@@ -16,6 +16,7 @@ const Deck = require('./Splendor.json');
 exports = module.exports = function createGame(id) {
   const token = () => ({ Emerald: 0, Sapphire: 0, Ruby: 0, Diamond: 0, Agate: 0, Gold: 0 });
   const users = [];
+  let start = false;
   const sockets = [];
   const roomId = id;
   const win = 15;
@@ -38,7 +39,7 @@ exports = module.exports = function createGame(id) {
   const getCurSocket = () => sockets[curUser];
 
   const getUsers = () => users.map((user, index) =>
-    (Object.assign({}, user, { curPlayer: index === curUser })));
+    (Object.assign({}, user, { curPlayer: (index === curUser) && start })));
   const getCurUser = () => {
     console.log(curUser);
     return users[curUser];
@@ -58,6 +59,7 @@ exports = module.exports = function createGame(id) {
   };
 
   const initDraw = () => {
+    start = true;
     curCard = {
       top: [drawCard('top'), drawCard('top'), drawCard('top'), drawCard('top')],
       mid: [drawCard('mid'), drawCard('mid'), drawCard('mid'), drawCard('mid')],

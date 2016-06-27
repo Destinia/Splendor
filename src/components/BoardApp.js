@@ -8,7 +8,7 @@ import Enemy from './Enemy';
 class BoardApp extends Component {
 
   componentDidMount() {
-    const { socket, init, updateCard, yourTurn, updateToken, roomId, full, updatePlayers, addPlayer } = this.props;
+    const { socket, init, updateCard, yourTurn, updateToken, roomId, full, updatePlayers, addPlayer, updateUserData } = this.props;
     console.log(roomId);
     //socket.join(roomId);
     socket.emit('mount', roomId);
@@ -18,7 +18,12 @@ class BoardApp extends Component {
     socket.on('test', (data) => { console.log(data); });
     socket.on('yourturn', yourTurn);
     socket.on('token', (data) => { updateToken(data.token); });
-    socket.on('addUser', (data) => { console.log(data); addPlayer(data); });
+    socket.on('addUser', (data) => { addPlayer(data); });
+    socket.on('onTheTable', (data) => {
+      console.log(data.slice(0,-1));
+      updateUserData({ userData: data[data.length - 1], order: data.length - 1 });
+      addPlayer(data);
+    });
   }
   // <button>{(curPlayer) ? 'me' : 'others'}</button>
 
@@ -39,7 +44,7 @@ class BoardApp extends Component {
               <Nobel nobel={nobel} />
             </div>
             <div className="col-sm-2">
-              <Token token={token} takeToken={takeToken}  />
+              <Token token={token} takeToken={takeToken} />
             </div>
           </div>
           <div className="row user-region">
@@ -83,6 +88,7 @@ BoardApp.propTypes = {
   full: PropTypes.func.isRequired,
   updatePlayers: PropTypes.func.isRequired,
   addPlayer: PropTypes.func.isRequired,
+  updateUserData: PropTypes.func.isRequired,
 };
 
 export default BoardApp;
