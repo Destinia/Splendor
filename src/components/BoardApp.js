@@ -20,7 +20,7 @@ class BoardApp extends Component {
 
   render() {
     const { purchase, cards, nobel, token, takeToken, userToken, currency,
-      curPlayer, players, clickEnemy } = this.props;
+      curPlayer, players, clickEnemy, userData, returnToken } = this.props;
     return (
       <div className="background">
         <div className="container-fluid fix">
@@ -35,12 +35,15 @@ class BoardApp extends Component {
               <Nobel nobel={nobel} />
             </div>
             <div className="col-sm-2">
-              <Token token={token} takeToken={takeToken} />
+              <Token token={token} takeToken={takeToken}  />
             </div>
           </div>
           <div className="row user-region">
             <div className="container-fluid">
-              <Hand currency={currency} userToken={userToken} />
+              <Hand
+                currency={currency} userToken={userToken}
+                userData={userData} curPlayer={curPlayer} returnToken={returnToken}
+              />
             </div>
           </div>
         </div>
@@ -70,6 +73,8 @@ BoardApp.propTypes = {
   takeToken: PropTypes.func.isRequired,
   purchase: PropTypes.func.isRequired,
   clickEnemy: PropTypes.func.isRequired,
+  userData: PropTypes.object.isRequired,
+  returnToken: PropTypes.func.isRequired,
 };
 
 export default BoardApp;

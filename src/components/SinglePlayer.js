@@ -6,7 +6,7 @@ const SinglePlayer = ({ enemy, handleOnclick }) => {
   return (
     <div className="player">
       <div className="img-region" onClick={handleOnclick}>
-        <img src={enemy.imgSrc} role="presentation" />
+        <img src={enemy.imgSrc} role="presentation" className={(enemy.curPlayer ? '' : 'transparent')} />
       </div>
       <div className={display}>
         <div className="token-row">

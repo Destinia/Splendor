@@ -5,6 +5,7 @@ export const UPDATE_CARD = 'UPDATE_CARD';
 export const INIT = 'INIT';
 export const CHECKOUT = 'CHECKOUT';
 export const TAKE_TOKEN = 'TAKE_TOKEN';
+export const RETURN_TOKEN = 'RETURN_TOKEN';
 export const UPDATE_USER_TOKEN = 'UPDATE_USER_TOKEN';
 export const UPDATE_PURCHASE = 'UPDATE_PURCHASE';
 export const CLICK_ENEMY = 'CLICK_ENEMY';
@@ -26,7 +27,7 @@ const updateTokenTaked = (type) => ({ type: TAKE_TOKEN, token: type });
 export const takeToken = (type, socket) =>
   (dispatch, getState) => {
     const { tokenTaked, token, curPlayer } = getState();
-    if (curPlayer) {
+    if (curPlayer && type !== 'Gold') {
       switch (tokenTaked.length) {
         case 0:
           if (token[type] !== 0) {
@@ -56,6 +57,18 @@ export const takeToken = (type, socket) =>
           break;
         default:
           return;
+      }
+    }
+  };
+
+const updateTokenReturn = (type) => ({ type: RETURN_TOKEN, token: type });
+
+export const returnToken = (type) =>
+  (dispatch, getState) => {
+    const { curPlayer, tokenTaked } = getState();
+    if (curPlayer) {
+      if (tokenTaked.findIndex((tar) => (tar === type)) > 0) {
+        dispatch(updateTokenReturn(type));
       }
     }
   };

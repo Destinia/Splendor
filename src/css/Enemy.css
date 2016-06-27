@@ -9,6 +9,10 @@
 
 }
 
+.transparent {
+  opacity: 0.5;
+}
+
 
 .enemy div.player {
   opacity: 1;
@@ -28,7 +32,6 @@
 
 .enemy div.player .img-region img {
   width: 100%;
-  opacity: 1;
 }
 
 .playertToken {

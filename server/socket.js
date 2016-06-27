@@ -56,7 +56,6 @@ console.log(newGame.getCurCard());
 const testPlayer = { imgSrc: '/public/images/portrait/portrait1.jpg',
   token: { Emerald: 0, Sapphire: 0, Ruby: 0, Diamond: 0, Agate: 0, Gold: 0 },
   currency: { Emerald: 0, Sapphire: 0, Ruby: 0, Diamond: 0, Agate: 0, Gold: 0 },
-  visible: false,
   };
 const testPlayers = [testPlayer, testPlayer, testPlayer];
 
@@ -69,12 +68,12 @@ exports = module.exports = (io) => {
       newGame.addUser(socket);
       console.log('new user ', name, 'mount');
       socket.emit('init', {
-        name,
         players: testPlayers,
         cards: newGame.getCurCard(),
         token: newGame.getCurToken(),
         nobel: newGame.getNobel(),
         curPlayer: (newGame.getUsers().length === 1),
+        userData: { name, imgSrc: '/public/images/portrait/portrait2.jpg' },
       });
     });
 

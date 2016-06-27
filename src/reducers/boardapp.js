@@ -7,12 +7,14 @@ import {
         MY_TURN,
         UPDATE_PURCHASE,
         CLICK_ENEMY,
+        RETURN_TOKEN,
         } from '../actions/boardapp';
 
 const initToken = { Emerald: 7, Sapphire: 7, Ruby: 7, Diamond: 7, Agate: 7, Gold: 5 };
 const initUserToken = { Emerald: 0, Sapphire: 0, Ruby: 0, Diamond: 0, Agate: 0, Gold: 0 };
 const initCurToken = { Emerald: 0, Sapphire: 0, Ruby: 0, Diamond: 0, Agate: 0, Gold: 0 };
 const initCard = { top: [], mid: [], bot: [] };
+const initUserData = { name: '', img: '' };
 
 
 export function inited(state = false, action) {
@@ -25,9 +27,11 @@ export function inited(state = false, action) {
 export function players(state = [], action) {
   switch (action.type) {
     case INIT: {
-      //return state
+      // return state
       // temp test
-      return action.players;
+      return action.players.map((player) =>
+        ({ ...player, visible: false, curPlayer: false })
+      );
     }
     case CLICK_ENEMY: {
       return state.map((player, index) => {
@@ -43,10 +47,10 @@ export function players(state = [], action) {
   }
 }
 
-export function name(state = '', action) {
+export function userData(state = initUserData, action) {
   switch (action.type) {
     case INIT: {
-      return action.name;
+      return action.userData;
     }
     default: {
       return state;
@@ -83,6 +87,10 @@ export function tokenTaked(state = [], action) {
     case YOUR_TURN: {
       return [];
     }
+    case RETURN_TOKEN: {
+      const remove = state.findIndex((tar) => (action.token === tar));
+      return state.filter((tar, index) => (index !== remove));
+    }
     default: {
       return state;
     }
@@ -98,16 +106,10 @@ export function token(state = initToken, action) {
       return action.tokens;
     }
     case TAKE_TOKEN: {
-      /* must be modify
-      return Object.keys(state).map((key) => {
-        if (key !== action.token) {
-          return
-        }
-      });
-      */
-      const tokens = state;
-      tokens[action.token]--;
-      return tokens;
+      return { ...state, [action.token]: state[action.token] - 1 };
+    }
+    case RETURN_TOKEN: {
+      return { ...state, [action.token]: state[action.token] + 1 };
     }
     case UPDATE_PURCHASE: {
       return action.token;
@@ -132,12 +134,13 @@ export function currency(state = initCurToken, action) {
 export function userToken(state = initUserToken, action) {
   switch (action.type) {
     case TAKE_TOKEN: {
-      const tokens = state;
-      tokens[action.token]++;
-      return tokens;
+      return { ...state, [action.token]: state[action.token] + 1 };
     }
     case UPDATE_PURCHASE: {
       return action.userToken;
+    }
+    case RETURN_TOKEN: {
+      return { ...state, [action.token]: state[action.token] - 1 };
     }
     default: {
       return state;
