@@ -8,13 +8,17 @@ import Enemy from './Enemy';
 class BoardApp extends Component {
 
   componentDidMount() {
-    const { socket, init, updateCard, yourTurn, updateToken } = this.props;
-    socket.emit('mount', {});
+    const { socket, init, updateCard, yourTurn, updateToken, roomId, full, updatePlayers, addPlayer } = this.props;
+    console.log(roomId);
+    //socket.join(roomId);
+    socket.emit('mount', roomId);
+    socket.on('full', full);
     socket.on('init', (data) => { init(data); });
     socket.on('drawcard', (data) => { updateCard(data.cards); updateToken(data.token); });
     socket.on('test', (data) => { console.log(data); });
     socket.on('yourturn', yourTurn);
     socket.on('token', (data) => { updateToken(data.token); });
+    socket.on('addUser', (data) => { console.log(data); addPlayer(data); });
   }
   // <button>{(curPlayer) ? 'me' : 'others'}</button>
 
@@ -75,6 +79,10 @@ BoardApp.propTypes = {
   clickEnemy: PropTypes.func.isRequired,
   userData: PropTypes.object.isRequired,
   returnToken: PropTypes.func.isRequired,
+  roomId: PropTypes.string.isRequired,
+  full: PropTypes.func.isRequired,
+  updatePlayers: PropTypes.func.isRequired,
+  addPlayer: PropTypes.func.isRequired,
 };
 
 export default BoardApp;

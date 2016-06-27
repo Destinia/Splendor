@@ -11,10 +11,10 @@ const socket = io('localhost:8080', { path: '/api/game' });
 // const BoardappPage = () => (<div>test</div>);
 
 class BoardappPage extends Component {
-
   render() {
+    const { inited } = this.props;
     // need four players
-    if (true) {
+    if (inited) {
       return (
         <BoardApp {...this.props} socket={socket} />);
     }
@@ -22,7 +22,9 @@ class BoardappPage extends Component {
   }
 }
 
-
+BoardappPage.propTypes = {
+  inited: PropTypes.bool.isRequired,
+};
 
 const mapStateToProps = (state) => ({
   ...state,

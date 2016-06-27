@@ -8,6 +8,9 @@ import {
         UPDATE_PURCHASE,
         CLICK_ENEMY,
         RETURN_TOKEN,
+        UPDATE_PLAYERS,
+        FULL,
+        ADD_PLAYER,
         } from '../actions/boardapp';
 
 const initToken = { Emerald: 7, Sapphire: 7, Ruby: 7, Diamond: 7, Agate: 7, Gold: 5 };
@@ -17,11 +20,26 @@ const initCard = { top: [], mid: [], bot: [] };
 const initUserData = { name: '', img: '' };
 
 
-export function inited(state = false, action) {
-  if (action.type === INIT) {
-    return true;
+export function inited(state = true, action) {
+  switch (action.type) {
+    case INIT: {
+      return true;
+    }
+    case FULL: {
+      return false;
+    }
+    default: {
+      return state;
+    }
   }
-  return false;
+}
+
+export function roomId(state = 'test', action) {
+  switch (action.type) {
+    default: {
+      return state;
+    }
+  }
 }
 
 export function players(state = [], action) {
@@ -40,6 +58,16 @@ export function players(state = [], action) {
         }
         return { ...player, visible: !player.visible };
       });
+    }
+    case UPDATE_PLAYERS: {
+      return action.players.map((player, index) =>
+        ({ ...player, visible: state[index].visible })
+      );
+    }
+    case ADD_PLAYER: {
+      return action.players.map((player) =>
+        ({ ...player, visible: true })
+      );
     }
     default: {
       return state;

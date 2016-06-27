@@ -50,55 +50,90 @@ var userNames = (function () {
   };
 }());
 
-const newGame = createGame();
-newGame.initDraw();
-console.log(newGame.getCurCard());
-const testPlayer = { imgSrc: '/public/images/portrait/portrait1.jpg',
-  token: { Emerald: 0, Sapphire: 0, Ruby: 0, Diamond: 0, Agate: 0, Gold: 0 },
-  currency: { Emerald: 0, Sapphire: 0, Ruby: 0, Diamond: 0, Agate: 0, Gold: 0 },
-  };
-const testPlayers = [testPlayer, testPlayer, testPlayer];
+const GameList = {};
+
 
 exports = module.exports = (io) => {
   io.sockets.on('connection', (socket) => {
     let name = '';
     // send the new user their name and a list of users
-    socket.on('mount', () => {
-      name = userNames.getGuestName();
+    socket.on('mount', (roomId) => {
+      name = 'test';
+      socket.join(roomId);
+      if (GameList[roomId] === undefined) {
+        GameList[roomId] = createGame(roomId);
+        console.log('test');
+      }
+      const newGame = GameList[roomId];
+      console.log(GameList);     
+      switch (GameList[roomId].getUsers().length) {
+        case 4: {
+          //socket.emit('full');
+          break;
+        }
+
+        case 3: {
+          newGame.addUser(socket);
+          newGame.initDraw();
+          socket.emit('init', {
+            players: newGame.getUsers(),
+            cards: newGame.getCurCard(),
+            token: newGame.getCurToken(),
+            nobel: newGame.getNobel(),
+            curPlayer: false,
+            userData: { name, imgSrc: '/public/images/portrait/portrait2.jpg',
+            id: newGame.getUsers().length - 1 },
+          });
+          socket.broadcast.to(roomId).emit('init', {
+            players: newGame.getUsers(),
+            cards: newGame.getCurCard(),
+            token: newGame.getCurToken(),
+            nobel: newGame.getNobel(),
+            curPlayer: false,
+            userData: { name, imgSrc: '/public/images/portrait/portrait2.jpg',
+            id: newGame.getUsers().length - 1 },
+          });
+          newGame.getCurSocket.emit('yourturn');
+          break;
+        }
+        default : {
+          console.log('this.case');
+          newGame.addUser(socket);
+          socket.emit('addUser', newGame.getUsers());
+          socket.broadcast.to(roomId).emit('addUser', newGame.getUsers());
+        }
+      }
       newGame.addUser(socket);
       console.log('new user ', name, 'mount');
-      socket.emit('init', {
-        players: testPlayers,
-        cards: newGame.getCurCard(),
-        token: newGame.getCurToken(),
-        nobel: newGame.getNobel(),
-        curPlayer: (newGame.getUsers().length === 1),
-        userData: { name, imgSrc: '/public/images/portrait/portrait2.jpg' },
-      });
     });
 
 
-    socket.on('card', (data) => {
+    socket.on('card', (data, id) => {
       console.log('here', data);
+      const newGame = GameList[id];
       newGame.takeCard(data.level, data.index);
       socket.emit('drawcard',
-        { cards: newGame.getCurCard(), token: newGame.getCurUser().token }
+        { cards: newGame.getCurCard(), token: newGame.getCurUser().token,
+         players: newGame.getUsers() }
       );
-      socket.broadcast.emit('drawcard', { cards: newGame.getCurCard() });
+      socket.broadcast.to(id).emit('drawcard',
+       { cards: newGame.getCurCard(), token: newGame.getCurToken(), players: newGame.getUsers() });
       newGame.nextTurn();
-      newGame.getCurUser().socket.emit('yourturn');
+      newGame.getCurSocket().emit('yourturn');
       // newGame.get_users().forEach((user)=>{user.socket.emit("test","hello");});
     });
 
-    socket.on('take_token', (data) => {
+    socket.on('takeToken', (data, id) => {
+      const newGame = GameList[id];
       newGame.takeToken(data);
-      socket.broadcast.emit('token', { token: newGame.getCurToken() });
+      socket.broadcast.emit('token', { token: newGame.getCurToken(), players: newGame.getUsers() });
       newGame.nextTurn();
-      newGame.getCurUser().socket.emit('yourturn');
+      newGame.getCurSocket().emit('yourturn');
     });
 
     // setInterval(()=>{socket.emit('test',{hey:"het"});},1000)
     // notify other clients that a new user has joined
+    /*
     socket.broadcast.emit('user:join', {
       name,
     });
@@ -131,5 +166,6 @@ exports = module.exports = (io) => {
       });
       userNames.free(name);
     });
+    */
   });
 };

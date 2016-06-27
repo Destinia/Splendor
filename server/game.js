@@ -13,28 +13,32 @@
 
 const Deck = require('./Splendor.json');
 
-exports = module.exports = function createGame() {
+exports = module.exports = function createGame(id) {
   const token = () => ({ Emerald: 0, Sapphire: 0, Ruby: 0, Diamond: 0, Agate: 0, Gold: 0 });
-
-  const createUser = (socket) => ({ token: token(), score: 0, currency: token(), socket });
-
+  const users = [];
+  const sockets = [];
+  const roomId = id;
   const win = 15;
   let curCard = { top: [], mid: [], bot: [], nobel: [] };
-
-
-  const users = [];
 	// curUser = 4 for win
   let curUser = 0;
 
   const curToken = { Emerald: 7, Sapphire: 7, Ruby: 7, Diamond: 7, Agate: 7, Gold: 5 };
   const deck = Deck;
-
+  const createUser = () => (
+    { id: users.length, token: token(), score: 0, currency: token(),
+    imgSrc: `/public/images/portrait/portrait${users.length + 1}.jpg` }
+  );
+  const getRoomId = () => roomId;
   const addUser = (socket) => {
-    users.push(createUser(socket));
+    users.push(createUser());
+    sockets.push(socket);
     // users.forEach((user) => { console.log(user.socket.id); });
   };
+  const getCurSocket = () => sockets[curUser];
 
-  const getUsers = () => users;
+  const getUsers = () => users.map((user, index) =>
+    (Object.assign({}, user, { curPlayer: index === curUser })));
   const getCurUser = () => {
     console.log(curUser);
     return users[curUser];
@@ -130,6 +134,8 @@ exports = module.exports = function createGame() {
     drawCard,
     takeToken,
     addUser,
+    getRoomId,
+    getCurSocket,
     // for testing no allowed to take
     deck,
     curToken,
