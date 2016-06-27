@@ -13,6 +13,7 @@ export const NEXT_TURN = 'NEXT_TURN';
 export const FULL = 'FULL';
 export const ADD_PLAYER = 'ADD_PLAYER';
 export const UPDATE_USERDATA = 'UPDATE_USERDATA';
+export const TAKE_NOBEL = 'TAKE_NOBEL';
 
 export const updateToken = (tokens) => ({ type: UPDATE_TOKEN, tokens });
 
@@ -148,6 +149,21 @@ export const purchase = (card, index, socket) =>
       token.Gold += need;
       dispatch(updatePurchase(card, userToken, token));
       socket.emit('card', { card, level: card.level, index }, roomId);
+    }
+  };
+
+export const takeNobel = (nobel, socket) =>
+  (dispatch, getState) => {
+    const { currency, roomId } = getState();
+    const enough = Object.keys(nobel.price).reduce((prev, key) => {
+      if (prev && currency[key] >= nobel.price[key]) {
+        return true;
+      }
+      return false;
+    }, true);
+    if (enough) {
+      dispatch({ type: TAKE_NOBEL, nobel });
+      socket.emit('nobel', nobel, roomId);
     }
   };
 

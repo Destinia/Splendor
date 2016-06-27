@@ -28,7 +28,7 @@ class BoardApp extends Component {
 
   render() {
     const { purchase, cards, nobel, token, takeToken, userToken, currency,
-      curPlayer, players, clickEnemy, userData, returnToken, socket, score } = this.props;
+      curPlayer, players, clickEnemy, userData, returnToken, socket, score, takeNobel } = this.props;
     return (
       <div className="background">
         <div className="container-fluid fix">
@@ -43,7 +43,7 @@ class BoardApp extends Component {
               />
             </div>
             <div className="col-sm-2">
-              <Nobel nobel={nobel} />
+              <Nobel nobel={nobel} takeNobel={takeNobel} />
             </div>
             <div className="col-sm-2">
               <Token token={token} takeToken={takeToken} socket={socket} />
@@ -91,6 +91,7 @@ BoardApp.propTypes = {
   addPlayer: PropTypes.func.isRequired,
   updateUserData: PropTypes.func.isRequired,
   nextTurn: PropTypes.func.isRequired,
+  takeNobel: PropTypes.func.isRequired,
 };
 
 export default BoardApp;

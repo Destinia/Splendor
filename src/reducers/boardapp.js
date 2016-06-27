@@ -13,6 +13,7 @@ import {
         ADD_PLAYER,
         UPDATE_USERDATA,
         NEXT_TURN,
+        TAKE_NOBEL,
         } from '../actions/boardapp';
 
 const initToken = { Emerald: 0, Sapphire: 0, Ruby: 0, Diamond: 0, Agate: 0, Gold: 0 };
@@ -210,6 +211,9 @@ export function nobel(state = [], action) {
         return action.nobel;
       }
       return state;
+    }
+    case TAKE_NOBEL: {
+      return state.filter((tar, index) => (index !== action.nobel));
     }
     default: {
       return state;
