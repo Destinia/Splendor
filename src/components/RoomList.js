@@ -2,22 +2,18 @@ import React, { PropTypes } from 'react';
 import '../css/Lobby.css';
 
 class RoomList extends React.Component {
-  /* constructor(props, context) {
-    super(props, context);
-    this.state = {
-      roomList: [{
-        roomName: 'NO AFK!!!!!',
-        roomId: '46Juzcyx',
-        owner: 'Allen',
-        nowPlayer: 3,
-      }, {
-        roomName: 'NTUGodCard',
-        roomId: '2WEKaVNO',
-        owner: 'Jeff',
-        nowPlayer: 4,
-      }],
-    };
-  } */
+  componentDidMount() {
+    console.log(this.props);
+    const { socket } = this.props.route;
+    const { updateRoom } = this.props;
+    socket.emit('mountOnLobby', {});
+    socket.on('roomList', (data) => {
+      console.log('Here in Roomlist');
+      console.log(data);
+      updateRoom(data);
+    });
+    console.log(this.props);
+  }
 
   render() {
     const { roomList } = this.props;
@@ -44,7 +40,8 @@ class RoomList extends React.Component {
 
 RoomList.propTypes = {
   roomList: PropTypes.array.isRequired,
-  // LobbyApp: PropTypes.object.isRequired,
+  route: PropTypes.any.isRequired,
+  updateRoom: PropTypes.func.isRequired,
 };
 
 export default RoomList;

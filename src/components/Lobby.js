@@ -4,15 +4,6 @@ import { Link } from 'react-router';
 import '../css/Lobby.css';
 
 class Lobby extends React.Component {
-  componentDidMount() {
-    const { socket, updateRoom } = this.props;
-    socket.emit('mountOnLobby', {});
-    socket.on('roomList', (data) => {
-      console.log(data);
-      updateRoom(data);
-    });
-    console.log(this.props);
-  }
 
   render() {
     return (
@@ -35,9 +26,10 @@ class Lobby extends React.Component {
 }
 
 Lobby.propTypes = {
-  socket: PropTypes.object.isRequired,
+  route: PropTypes.any.isRequired,
+  // socket: PropTypes.object.isRequired,
   children: PropTypes.any.isRequired,
-  updateRoom: PropTypes.func.isRequired,
+  // updateRoom: PropTypes.func.isRequired,
 };
 
 export default Lobby;

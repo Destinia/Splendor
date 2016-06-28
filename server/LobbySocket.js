@@ -6,5 +6,10 @@ exports = module.exports = (io) => {
       // console.log('mount here');
       socket.emit('roomList', LobbyServer.roomList);
     });
+
+    socket.on('CreateRoomOnLobby', (data) => {
+      console.log(data);
+      LobbyServer.createRoom(data.roomName, data.owner);
+    });
   });
 };

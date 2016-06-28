@@ -4,9 +4,11 @@ import App from './containers/App';
 import * as containers from './containers';
 import BoardappPage from './containers/BoardappPage';
 import LobbyPage from './containers/LobbyPage';
+import RoomListPage from './containers/RoomListPage';
+import CreateRoomPage from './containers/CreateRoomPage';
 
-import RoomList from './components/RoomList';
-import CreateRoom from './components/CreateRoom';
+import io from 'socket.io-client';
+const socket = io('localhost:8080', { path: '/api/lobby' });
 
 const {
   CounterPage,
@@ -21,9 +23,9 @@ console.log(BoardappPage);
 export default (
   <Route >
     <Route path="/" component={CounterPage} />
-    <Route path="/Lobby" component={LobbyPage}>
-      <Route path="RoomList" component={RoomList} />
-      <Route path="CreateRoom" component={CreateRoom} />
+    <Route path="/Lobby" component={LobbyPage} socket={socket} >
+      <Route path="RoomList" component={RoomListPage} socket={socket} />
+      <Route path="CreateRoom" component={CreateRoomPage} socket={socket} />
     </Route>
     <Route path="/game" component={BoardappPage} />
     <Route path="/another" component={AnotherPage} />
