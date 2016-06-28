@@ -6,7 +6,7 @@ import React, { PropTypes, Component } from 'react';
 import io from 'socket.io-client';
 import '../css/BoardApp.css';
 
-const socket = io('localhost:8080', { path: '/api/game' });
+const socket = io(`${location.hostname}:8080`, { path: '/api/game' });
 
 // const BoardappPage = () => (<div>test</div>);
 
