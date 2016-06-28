@@ -11,5 +11,10 @@ exports = module.exports = (io) => {
       console.log(data);
       LobbyServer.createRoom(data.roomName, data.owner);
     });
+
+    socket.on('LoginOnLobby', (data) => {
+      const isUser = LobbyServer.isUser(data.userName, data.password);
+      socket.emit('Authenticated', { isUser });
+    });
   });
 };

@@ -6,28 +6,39 @@ class Login extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.handleChange = this.handleChange.bind(this);
-    // this.handleClick = this.handleClick.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   handleChange(event, inputType) {
-    if (event.target.value !== '') {
-      if (inputType === 'username') {
-        const { changeUserName } = this.props;
-        changeUserName(event.target.value);
-      } else if (inputType === 'password') {
-        const { changePassword } = this.props;
-        changePassword(event.target.value);
-      }
+    if (inputType === 'username') {
+      const { changeUserName } = this.props;
+      changeUserName(event.target.value);
+    } else if (inputType === 'password') {
+      const { changePassword } = this.props;
+      changePassword(event.target.value);
+    }
+  }
+
+  handleClick() {
+    const { typingUserName, typingPassword } = this.props;
+    const { socket } = this.props.route;
+
+    if (typingUserName !== '' && typingPassword !== '') {
+      socket.emit('LoginOnLobby', {
+        userName: typingUserName,
+        password: typingPassword,
+      });
+      socket.on('Authenticated', (data) => { console.log(data); });
     }
   }
 
   render() {
     const handleChange = this.handleChange;
-
+    const handleClick = this.handleClick;
     return (
       <div className="col-md-4 col-md-offset-4 vcenter">
         <div className="well bs-component">
-          <legend>Login</legend>
+          <legend>Splendor</legend>
           <form className="form-horizontal">
             <fieldset>
               <div className="form-group">
@@ -45,9 +56,10 @@ class Login extends React.Component {
                 </div>
               </div>
               <div className="form-group">
-                <div className="col-md-10 col-md-offset-2">
-                  <button type="button" className="btn btn-primary">Submit</button>
-                  <button type="button" className="btn btn-default">Cancel</button>
+                <div className="col-md-4 col-md-offset-4">
+                  <button
+                    type="button" className="btn btn-primary" onClick={handleClick}
+                  >Login</button>
                 </div>
               </div>
             </fieldset>

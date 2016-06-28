@@ -15,4 +15,8 @@ module.exports = {
 
     LobbyData.roomList.push(roomObj);
   },
+  isUser: function isUser(userName, password) {
+    console.log(userName, password);
+    return true;
+  },
 };
