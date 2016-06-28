@@ -19,7 +19,7 @@ class BoardApp extends Component {
   // <button>{(curPlayer) ? 'me' : 'others'}</button>
 
   render() {
-    const { purchase, cards, nobel, token, takeToken, userToken, currency, curPlayer,players } = this.props;
+    const { purchase, cards, nobel, token, takeToken, userToken, currency, curPlayer, players } = this.props;
     return (
       <div className="background">
         <div className="container-fluid fix">

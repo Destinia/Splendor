@@ -5,9 +5,13 @@ import '../css/Lobby.css';
 
 class Lobby extends React.Component {
   componentDidMount() {
-    const { socket } = this.props;
-    socket.emit('mount', {});
-    socket.on('test', (data) => { console.log(data); });
+    const { socket, updateRoom } = this.props;
+    socket.emit('mountOnLobby', {});
+    socket.on('roomList', (data) => {
+      console.log(data);
+      updateRoom(data);
+    });
+    console.log(this.props);
   }
 
   render() {
@@ -28,12 +32,12 @@ class Lobby extends React.Component {
       </div>
     );
   }
-
 }
 
 Lobby.propTypes = {
   socket: PropTypes.object.isRequired,
   children: PropTypes.any.isRequired,
+  updateRoom: PropTypes.func.isRequired,
 };
 
 export default Lobby;

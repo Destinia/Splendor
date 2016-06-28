@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import '../css/Lobby.css';
 
 class RoomList extends React.Component {
-
-  constructor(props, context) {
+  /* constructor(props, context) {
     super(props, context);
     this.state = {
       roomList: [{
@@ -18,10 +17,10 @@ class RoomList extends React.Component {
         nowPlayer: 4,
       }],
     };
-  }
+  } */
 
   render() {
-    const { roomList } = this.state;
+    const { roomList } = this.props;
 
     return (
       <div id="page-content-wrapper">
@@ -33,7 +32,7 @@ class RoomList extends React.Component {
             <div className="container-fluid">
               <ul className="list-group">
                 <li key={room.roomId} className="list-group-item">
-                  {room.roomName} / {room.owner} <span className="badge">{room.nowPlayer}</span>
+                  {room.roomName} / {room.owner} <span className="badge">{room.nowPlayerNum}</span>
                 </li>
               </ul>
             </div>
@@ -41,7 +40,11 @@ class RoomList extends React.Component {
       </div>
     );
   }
-
 }
+
+RoomList.propTypes = {
+  roomList: PropTypes.array.isRequired,
+  // LobbyApp: PropTypes.object.isRequired,
+};
 
 export default RoomList;

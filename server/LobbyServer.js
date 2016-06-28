@@ -1,17 +1,18 @@
-import { roomList } from './LobbyData.js';
-import shortid from 'shortid';
+const LobbyData = require('./LobbyData.js');
+const shortid = require('shortid');
 
 module.exports = {
-  createRoom: function createRoom(roomName, owner, maxPlayer = 4) {
+  roomList: LobbyData.roomList,
+  createRoom: function createRoom(roomName, owner) {
     const id = shortid.generate();
 
     const roomObj = {
       id,
       roomName,
       owner,
-      maxPlayer,
+      nowPlayerNum: 0,
     };
 
-    roomList.push(roomObj);
+    LobbyData.roomList.push(roomObj);
   },
 };
