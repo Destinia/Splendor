@@ -6,10 +6,8 @@ const GameList = {};
 
 exports = module.exports = (io) => {
   io.sockets.on('connection', (socket) => {
-    let name = '';
     // send the new user their name and a list of users
     socket.on('mount', (roomId) => {
-      name = 'test';
       socket.join(roomId);
       if (GameList[roomId] === undefined) {
         GameList[roomId] = createGame(roomId);
@@ -48,21 +46,18 @@ exports = module.exports = (io) => {
           socket.broadcast.to(roomId).emit('addUser', newGame.getUsers());
         }
       }
-      console.log('new user ', name, 'mount');
     });
 
 
     socket.on('card', (data, id) => {
       console.log('purchase card', data);
       const newGame = GameList[id];
-      newGame.takeCard(data.level, data.index);
-      socket.emit('drawcard',
-        { cards: newGame.getCurCard(), token: newGame.getCurUser().token,
-         players: newGame.getUsers() }
+      newGame.takeCard(data);
+      socket.emit('nextTurn', { cards: newGame.getCurCard(),
+        token: newGame.getCurUser().token, players: newGame.getUsers() }
       );
-      socket.broadcast.to(id).emit('drawcard',
+      socket.broadcast.to(id).emit('nextTurn',
        { cards: newGame.getCurCard(), token: newGame.getCurToken(), players: newGame.getUsers() });
-      newGame.nextTurn();
       newGame.getCurSocket().emit('yourturn');
       // newGame.get_users().forEach((user)=>{user.socket.emit("test","hello");});
     });
@@ -71,13 +66,21 @@ exports = module.exports = (io) => {
       console.log('take token', data);
       const newGame = GameList[id];
       newGame.takeToken(data);
-      newGame.nextTurn();
       socket.emit('nextTurn', { token: newGame.getCurToken(), players: newGame.getUsers() });
       socket.broadcast.to(id).emit('nextTurn',
         { token: newGame.getCurToken(), players: newGame.getUsers() });
       newGame.getCurSocket().emit('yourturn');
     });
 
+    socket.on('preserveCard', (data, id) => {
+      const newGame = GameList[id];
+      newGame.preserveCard(data);
+      socket.emit('nextTurn', { cards: newGame.getCurCard(), token: newGame.getCurToken(),
+        players: newGame.getUsers() });
+      socket.broadcast.to(id).emit('nextTurn',
+        { cards: newGame.getCurCard(), token: newGame.getCurToken(), players: newGame.getUsers() });
+      newGame.getCurSocket().emit('yourturn');
+    });
     // setInterval(()=>{socket.emit('test',{hey:"het"});},1000)
     // notify other clients that a new user has joined
     /*

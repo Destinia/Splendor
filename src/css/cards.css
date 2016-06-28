@@ -52,7 +52,7 @@ origin
 .playingCards a.card:hover, .playingCards a.card:active, .playingCards a.card:focus,
 .playingCards label.card:hover,
 .playingCards strong .card {
-    bottom: 1em;
+    bottom: 0.5em;
 }
 /* check card afforded */
 .playingCards a.shortage:hover {
@@ -146,6 +146,7 @@ origin
     width: 50%;
     float:right;
 }
+
 
 /*for gem
 
@@ -512,6 +513,29 @@ Emerald,Sapphire,Ruby,Diamond,Agate,Gold
     left: .5em;
     padding: 0 .1em;
 }
+
+/* preserve region 
+********************************************************************/
+.playingCards ul.preserve {
+    list-style-type: none;
+    padding: 0;
+    margin: 0 0 0 0;
+    position: relative;
+    clear: both;
+
+}
+
+.playingCards ul.preserve li {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    float: left;
+}
+
+.playingCards ul.preserve a.card {
+    font-size: 1.5vw;
+}
+
 
 
 /* hand (in your hand or on table or as a deck)

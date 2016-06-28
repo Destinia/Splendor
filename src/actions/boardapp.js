@@ -14,6 +14,8 @@ export const FULL = 'FULL';
 export const ADD_PLAYER = 'ADD_PLAYER';
 export const UPDATE_USERDATA = 'UPDATE_USERDATA';
 export const TAKE_NOBEL = 'TAKE_NOBEL';
+export const PRESERVE_CARD = 'PRESERVE_CARD';
+export const UPDATE_PRESERVED = 'UPDATE_PRESERVED';
 
 export const updateToken = (tokens) => ({ type: UPDATE_TOKEN, tokens });
 
@@ -74,9 +76,9 @@ export const takeToken = (type, socket) =>
           if (token[type] !== 0) {
             if (type === tokenTaked[0]) {
               // tokenTaked.push(type);
+              dispatch(yourTurn());
               dispatch(updateTokenTaked(type));
               socket.emit('takeToken', [type], roomId);
-              dispatch(yourTurn());
             } else {
               dispatch(updateTokenTaked(type));
             }
@@ -85,9 +87,9 @@ export const takeToken = (type, socket) =>
         case 2:
           if (token[type] !== 0) {
             if (type !== tokenTaked[0] && type !== tokenTaked[1]) {
+              dispatch(yourTurn());
               dispatch(updateTokenTaked(type));
               socket.emit('takeToken', [...tokenTaked, type], roomId);
-              dispatch(yourTurn());
             }
           }
           break;
@@ -148,13 +150,16 @@ export const purchase = (card, index, socket) =>
       userToken.Gold -= need;
       token.Gold += need;
       dispatch(updatePurchase(card, userToken, token));
-      socket.emit('card', { card, level: card.level, index }, roomId);
+      socket.emit('card', card, roomId);
+      if (index < 0) {
+        dispatch({ type: UPDATE_PRESERVED, card });
+      }
     }
   };
 
 export const takeNobel = (nobel, socket) =>
   (dispatch, getState) => {
-    const { currency, roomId } = getState();
+    const { currency, roomId, order } = getState();
     const enough = Object.keys(nobel.price).reduce((prev, key) => {
       if (prev && currency[key] >= nobel.price[key]) {
         return true;
@@ -163,7 +168,15 @@ export const takeNobel = (nobel, socket) =>
     }, true);
     if (enough) {
       dispatch({ type: TAKE_NOBEL, nobel });
-      socket.emit('nobel', nobel, roomId);
+      socket.emit('nobel', { nobel, order }, roomId);
     }
   };
 
+export const preserveCard = (card, socket) =>
+  (dispatch, getState) => {
+    const { tokenTaked, curPlayer, preserved, roomId } = getState();
+    if (curPlayer && tokenTaked.length === 0 && preserved.length < 3) {
+      dispatch({ type: PRESERVE_CARD, card });
+      socket.emit('preserveCard', card, roomId);
+    }
+  };

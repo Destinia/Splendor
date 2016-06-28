@@ -14,6 +14,8 @@ import {
         UPDATE_USERDATA,
         NEXT_TURN,
         TAKE_NOBEL,
+        PRESERVE_CARD,
+        UPDATE_PRESERVED,
         } from '../actions/boardapp';
 
 const initToken = { Emerald: 0, Sapphire: 0, Ruby: 0, Diamond: 0, Agate: 0, Gold: 0 };
@@ -103,6 +105,9 @@ export function curPlayer(state = false, action) {
     case UPDATE_PURCHASE: {
       return false;
     }
+    case PRESERVE_CARD: {
+      return false;
+    }
     default: {
       return state;
     }
@@ -114,7 +119,7 @@ export function tokenTaked(state = [], action) {
     case TAKE_TOKEN: {
       return [...state, action.token];
     }
-    case YOUR_TURN: {
+    case MY_TURN: {
       return [];
     }
     case RETURN_TOKEN: {
@@ -147,6 +152,9 @@ export function token(state = initToken, action) {
     case NEXT_TURN: {
       return action.token;
     }
+    case PRESERVE_CARD: {
+      return { ...state, Gold: state.Gold - 1 };
+    }
     default: {
       return state;
     }
@@ -175,6 +183,9 @@ export function userToken(state = initUserToken, action) {
     case RETURN_TOKEN: {
       return { ...state, [action.token]: state[action.token] - 1 };
     }
+    case PRESERVE_CARD: {
+      return { ...state, Gold: state.Gold + 1 };
+    }
     default: {
       return state;
     }
@@ -194,6 +205,13 @@ export function cards(state = initCard, action) {
         return action.cards;
       }
       return state;
+    }
+    case PRESERVE_CARD: {
+      return {
+        top: state.top.filter((card) => (card !== action.card)),
+        mid: state.mid.filter((card) => (card !== action.card)),
+        bot: state.bot.filter((card) => (card !== action.card)),
+      };
     }
     default: {
       return state;
@@ -236,6 +254,20 @@ export function score(state = 0, action) {
   switch (action.type) {
     case UPDATE_PURCHASE: {
       return state + action.card.score;
+    }
+    default: {
+      return state;
+    }
+  }
+}
+
+export function preserved(state = [], action) {
+  switch (action.type) {
+    case PRESERVE_CARD: {
+      return [...state, action.card];
+    }
+    case UPDATE_PRESERVED: {
+      return state.filter((card) => (card !== action.card));
     }
     default: {
       return state;

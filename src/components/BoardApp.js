@@ -27,7 +27,7 @@ class BoardApp extends Component {
   // <button>{(curPlayer) ? 'me' : 'others'}</button>
 
   render() {
-    const { purchase, cards, nobel, token, takeToken, userToken, currency,
+    const { purchase, cards, nobel, token, takeToken, userToken, currency, preserved, preserveCard,
       curPlayer, players, clickEnemy, userData, returnToken, socket, score, takeNobel } = this.props;
     return (
       <div className="background">
@@ -39,7 +39,7 @@ class BoardApp extends Component {
             <div className="col-sm-5 cards-region">
               <Desk
                 purchase={purchase} cards={cards} userToken={userToken}
-                currency={currency} socket={socket}
+                currency={currency} socket={socket} preserveCard={preserveCard}
               />
             </div>
             <div className="col-sm-2">
@@ -54,6 +54,7 @@ class BoardApp extends Component {
               <Hand
                 currency={currency} userToken={userToken} score={score}
                 userData={userData} curPlayer={curPlayer} returnToken={returnToken}
+                socket={socket} purchase={purchase} preserved={preserved}
               />
             </div>
           </div>
@@ -92,6 +93,8 @@ BoardApp.propTypes = {
   updateUserData: PropTypes.func.isRequired,
   nextTurn: PropTypes.func.isRequired,
   takeNobel: PropTypes.func.isRequired,
+  preserved: PropTypes.array.isRequired,
+  preserveCard: PropTypes.func.isRequired,
 };
 
 export default BoardApp;

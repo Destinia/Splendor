@@ -28,7 +28,6 @@
 }
 
 .user-region .first {
-	margin-left: 5%;
 }
 
 .gem span {
@@ -40,12 +39,16 @@
 	opacity: 0.5
 }
 
-.user-img-region span.score {
+.user-img-region h2.score {
 	position: absolute;
-	bottom:20%;
-	left: 60%;
+	bottom:10%;
+	left: 10%;
 	font-size: 1.5vw;
 	color: white;
+	opacity: 0;
+}
+.user-img-region:hover h2.score {
+	opacity: 1;
 }
 
 .user-region {
