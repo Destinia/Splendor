@@ -23,7 +23,6 @@ class Lobby extends React.Component {
   render() {
     const { isOwner } = this.props;
     // const disabled = (isOwner) ? 'disabled' : '';
-    // <Link to="/Lobby/CreateRoom" className="">Create Room</Link>
     return (
       <div>
         <ul className="nav nav-tabs">
