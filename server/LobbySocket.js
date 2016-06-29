@@ -38,5 +38,13 @@ exports = module.exports = (io) => {
         }
       });
     });
+
+    socket.on('AddOnePlayerOnLobby', (data) => {
+      const roomId = data.roomId;
+      console.log(roomId);
+      console.log(LobbyServer.roomList[roomId]);
+      LobbyServer.roomList[roomId].nowPlayerNum += 1;
+      // console.log(LobbyServer.roomList[roomId].nowPlayerNum);
+    });
   });
 };

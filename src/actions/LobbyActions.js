@@ -8,6 +8,8 @@ export const TYPE_PASSWORD = 'TYPE_PASSWORD';
 
 export const SET_USER_NAME = 'SET_USER_NAME';
 
+export const PLAYER_NUM_ADD = 'PLAYER_NUM_ADD';
+
 export const createRoom = (roomName, owner) => ({ type: CREATE_ROOM, roomName, owner });
 
 export const updateRoom = (newRoomList) =>
@@ -34,3 +36,4 @@ export const setUserName = (userName) =>
   (dispatch) => {
     dispatch({ type: SET_USER_NAME, userName });
   };
+

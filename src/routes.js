@@ -7,6 +7,7 @@ import LobbyPage from './containers/LobbyPage';
 import RoomListPage from './containers/RoomListPage';
 import CreateRoomPage from './containers/CreateRoomPage';
 import LoginPage from './containers/LoginPage';
+import HomePage from './containers/HomePage';
 
 import io from 'socket.io-client';
 const socket = io('localhost:8080', { path: '/api/lobby' });
@@ -24,10 +25,12 @@ console.log(BoardappPage);
 export default (
   <Route >
     <Route path="/" component={CounterPage}>
-      <IndexRedirect to="/Lobby" />
+      <IndexRedirect to="/login" />
     </Route>
     <Route path="/login" component={LoginPage} socket={socket} />
     <Route path="/Lobby" component={LobbyPage} socket={socket} >
+      <IndexRedirect to="/Lobby/Home" />
+      <Route path="Home" component={HomePage} />
       <Route path="RoomList" component={RoomListPage} socket={socket} />
       <Route path="CreateRoom" component={CreateRoomPage} socket={socket} />
     </Route>

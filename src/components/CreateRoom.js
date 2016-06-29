@@ -1,11 +1,12 @@
 import React, { PropTypes } from 'react';
-import '../css/Lobby.css';
+
+import '../css/bootstrap-material-design.css';
+import '../css/center-util.css';
 
 class CreateRoom extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.handleInputRoomName = this.handleInputRoomName.bind(this);
-    this.handleInputUserName = this.handleInputUserName.bind(this);
     this.handleClick = this.handleClick.bind(this);
   }
 
@@ -16,45 +17,43 @@ class CreateRoom extends React.Component {
     }
   }
 
-  handleInputUserName(event) {
-    const { changeUserName } = this.props;
-    if (event.target.value !== '') {
-      changeUserName(event.target.value);
-    }
-  }
-
   handleClick() {
     const { socket } = this.props.route;
-    const { typingRoomName, typingUserName, userName } = this.props;
+    const { typingRoomName, userName } = this.props;
     console.log('room name: ', typingRoomName);
-    console.log('user name: ', typingUserName);
-    console.log('userName: ', userName);
+    console.log('user name: ', userName);
     socket.emit('CreateRoomOnLobby', {
       roomName: typingRoomName,
-      owner: typingUserName,
+      owner: userName,
     });
   }
 
   render() {
     return (
-      <div id="page-content-wrapper">
-        <div className="input-group">
-          <input
-            type="text" className="form-control"
-            placeholder="Room Name" onChange={this.handleInputRoomName}
-          />
-          <input
-            type="text" className="form-control"
-            placeholder="Owner" onChange={this.handleInputUserName}
-          />
-        </div>
-        <div className="btn-group" role="group" aria-label="...">
-          <button
-            type="button" className="btn btn-default" onClick={this.handleClick}
-          >
-          Submit
-          </button>
-          <button type="button" className="btn btn-default">Cancle</button>
+      <div className="col-md-4 col-md-offset-4 vcenter">
+        <div className="well bs-component">
+          <legend>Enter the Room Name</legend>
+          <form className="form-horizontal">
+            <fieldset>
+              <div className="form-group">
+                <div className="col-md-12">
+                  <input
+                    type="text" className="form-control" placeholder="UserName"
+                    onChange={this.handleInputRoomName}
+                  />
+                </div>
+                <div className="form-group">
+                  <div className="col-md-4 col-md-offset-4">
+                    <button
+                      type="button" className="btn btn-primary" onClick={this.handleClick}
+                    >
+                    Submit
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+          </form>
         </div>
       </div>
     );
@@ -64,10 +63,8 @@ class CreateRoom extends React.Component {
 CreateRoom.propTypes = {
   route: PropTypes.object.isRequired,
   changeRoomName: PropTypes.func.isRequired,
-  changeUserName: PropTypes.func.isRequired,
   userName: PropTypes.string.isRequired,
   typingRoomName: PropTypes.string.isRequired,
-  typingUserName: PropTypes.string.isRequired,
 };
 
 export default CreateRoom;

@@ -6,7 +6,7 @@ import {
   SET_USER_NAME,
     } from '../actions/LobbyActions.js';
 
-export function roomList(state = [], action) {
+export function roomList(state = {}, action) {
   switch (action.type) {
     case UPDATE_ROOM:
       return action.newRoomList;

@@ -7,7 +7,7 @@ module.exports = {
     const id = shortid.generate();
 
     const roomObj = {
-      id,
+      roomId: id,
       roomName,
       owner,
       nowPlayerNum: 0,
