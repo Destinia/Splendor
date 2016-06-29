@@ -31,8 +31,10 @@ class Login extends React.Component {
       });
       socket.on('Authenticated', (data) => {
         console.log(data);
-        setUserName(typingUserName);
-        router.push('/Lobby');
+        if (data.isUser) {
+          setUserName(typingUserName);
+          router.push('/Lobby');
+        }
       });
       console.log('==================================');
     }
