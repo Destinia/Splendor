@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 
 const SocketIo = require('socket.io');
+const domain = (process.argv[2] === '-domain') ? process.argv[3] : 'localhost';
 
 const app = express();
 
