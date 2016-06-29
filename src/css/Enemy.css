@@ -8,6 +8,51 @@
   margin-top: 50px;
 
 }
+.enemy h2 {
+  font-size:1.5vw;
+}
+
+.enemy .user0 h2.name {
+  position: absolute;
+  top:6%;
+  color: white;
+}
+
+.enemy .user0 h2.score {
+  position: absolute;
+  top:29%;
+  color: white;
+}
+
+.enemy .user1 h2.name {
+  position: absolute;
+  top:37%;
+  color: white;
+}
+
+.enemy .user1 h2.score {
+  position: absolute;
+  top:59%;
+  color: white;
+}
+
+.enemy .user2 h2.name {
+  position: absolute;
+  top:68%;
+  color: white;
+}
+
+.enemy .user2 h2.score {
+  position: absolute;
+  top:89%;
+  color: white;
+}
+
+
+.transparent {
+  opacity: 0.5;
+}
+
 
 .enemy div.player {
   opacity: 1;
@@ -18,7 +63,7 @@
 .enemy .player .img-region {
   width:30%;
   margin-right: 10px;
-  float:left; 
+  float:left;
 }
 
 .token-row {
@@ -34,6 +79,11 @@
   height:33%;
   font-size: 25px;
 }
+
+.enemy div.player .invisible {
+  opacity: 0;
+}
+
 
 .enemy div.player .token-region .playerToken img {
   width: 8%;

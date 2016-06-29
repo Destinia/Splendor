@@ -5,7 +5,7 @@ import '../css/cards.css';
 class Desk extends Component {
 
   createCard(card, index) {
-    const { purchase, userToken, currency } = this.props;
+    const { purchase, userToken, currency, socket, preserveCard } = this.props;
     const checkout = (price) => {
       const owned = Object.keys(userToken).reduce((own, key) => {
         if (key !== 'Gold') {
@@ -13,7 +13,6 @@ class Desk extends Component {
             return own + price[key] - userToken[key] - currency[key];
           }
         }
-        console.log(price,own);
         return own;
       }, 0);
       return (owned <= userToken.Gold);
@@ -30,13 +29,14 @@ class Desk extends Component {
       }
       return;
     };
-    const purchaseCard = () => { purchase(card, index); };
+    const purchaseCard = () => { console.log('click'); purchase(card, index, socket); };
+    const handleOndbclick = () => { console.log('preserveCard'); preserveCard(card, socket); };
     return (
       <li>
         <a className={afforded} onClick={purchaseCard}>
           <span className="rank">
             <span>{card.score}</span>
-            <img src={`/public/images/card-type/${card.type}.png`} role="presentation" />
+            <img src={`/public/images/card-type/${card.type}.png`} role="presentation" onDoubleClick={handleOndbclick} />
           </span>
           {Object.keys(card.price).map(renderToken, this)}
         </a>
@@ -70,6 +70,8 @@ Desk.propTypes = {
   purchase: PropTypes.func.isRequired,
   userToken: PropTypes.object.isRequired,
   currency: PropTypes.object.isRequired,
+  socket: PropTypes.object.isRequired,
+  preserveCard: PropTypes.func.isRequired,
 };
 
 export default Desk;

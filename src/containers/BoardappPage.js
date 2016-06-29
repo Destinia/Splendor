@@ -6,15 +6,16 @@ import React, { PropTypes, Component } from 'react';
 import io from 'socket.io-client';
 import '../css/BoardApp.css';
 
-const socket = io('localhost:8080', { path: '/api/game' });
+const socket = io(`${location.hostname}:8080`, { path: '/api/game' });
+console.log(location.hostname);
 
 // const BoardappPage = () => (<div>test</div>);
 
 class BoardappPage extends Component {
-
   render() {
+    const { inited } = this.props;
     // need four players
-    if (true) {
+    if (inited) {
       return (
         <BoardApp {...this.props} socket={socket} />);
     }

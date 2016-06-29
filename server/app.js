@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 
 const SocketIo = require('socket.io');
+const domain = (process.argv[2] === '-domain') ? process.argv[3] : 'localhost';
 
 const app = express();
 
@@ -35,8 +36,8 @@ app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
 
 /* Start server */
 
-const server = app.listen(8080, 'localhost', function(){
-  console.log('API server on');
+const server = app.listen(8080, domain, () => {
+  console.log(`API server at ${domain}:8080`);
 });
 
 const io = new SocketIo(server, { path: '/api/game' });

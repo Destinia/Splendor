@@ -1,99 +1,104 @@
 // Keep track of which names are used so that there are no duplicates
 const createGame = require('./game.js');
 
-var userNames = (function () {
-  var names = {};
-
-  var claim = function (name) {
-    if (!name || names[name]) {
-      return false;
-    } else {
-      names[name] = true;
-      return true;
-    }
-  };
-
-  // find the lowest unused "guest" name and claim it
-  var getGuestName = function () {
-    var name,
-      nextUserId = 1;
-
-    do {
-      name = 'Guest ' + nextUserId;
-      nextUserId += 1;
-    } while (!claim(name));
-
-    return name;
-  };
-
-  // serialize claimed names as an array
-  var get = function () {
-    var res = [];
-    for (user in names) {
-      res.push(user);
-    }
-
-    return res;
-  };
-
-  var free = function (name) {
-    if (names[name]) {
-      delete names[name];
-    }
-  };
-
-  return {
-    claim: claim,
-    free: free,
-    get: get,
-    getGuestName: getGuestName
-  };
-}());
-
-const newGame = createGame();
-newGame.initDraw();
-console.log(newGame.getCurCard());
+const GameList = {};
 
 exports = module.exports = (io) => {
   io.sockets.on('connection', (socket) => {
-    let name = '';
     // send the new user their name and a list of users
-    socket.on('mount', () => {
-      name = userNames.getGuestName();
-      newGame.addUser(socket);
-      console.log('new user ', name, 'mount');
-      socket.emit('init', {
-        name,
-        players: userNames.get(),
-        cards: newGame.getCurCard(),
-        token: newGame.getCurToken(),
-        nobel: newGame.getNobel(),
-        curPlayer: (newGame.getUsers().length === 1),
-      });
+    socket.on('mount', (roomId) => {
+      socket.join(roomId);
+      if (GameList[roomId] === undefined) {
+        GameList[roomId] = createGame(roomId);
+        console.log('test');
+      }
+      const newGame = GameList[roomId];
+      switch (GameList[roomId].getUsers().length) {
+        case 4: {
+          socket.emit('full');
+          break;
+        }
+
+        case 3: {
+          newGame.addUser(socket);
+          socket.emit('onTheTable', newGame.getUsers());
+          socket.broadcast.to(roomId).emit('addUser', newGame.getUsers());
+          newGame.init();
+          socket.emit('init', {
+            players: newGame.getUsers(),
+            cards: newGame.getCurCard(),
+            token: newGame.getCurToken(),
+            nobel: newGame.getNobel(),
+          });
+          socket.broadcast.to(roomId).emit('init', {
+            players: newGame.getUsers(),
+            cards: newGame.getCurCard(),
+            token: newGame.getCurToken(),
+            nobel: newGame.getNobel(),
+          });
+          break;
+        }
+        default : {
+          console.log('this.case');
+          newGame.addUser(socket);
+          socket.emit('onTheTable', newGame.getUsers());
+          socket.broadcast.to(roomId).emit('addUser', newGame.getUsers());
+        }
+      }
     });
 
 
-    socket.on('card', (data) => {
-      console.log('here', data);
-      newGame.takeCard(data.level, data.index);
-      socket.emit('drawcard',
-        { cards: newGame.getCurCard(), token: newGame.getCurUser().token }
+    socket.on('card', (data, id) => {
+      console.log('purchase card', data);
+      const newGame = GameList[id];
+      newGame.takeCard(data);
+      socket.emit('nextTurn', { cards: newGame.getCurCard(),
+        token: newGame.getCurToken(), players: newGame.getUsers() }
       );
-      socket.broadcast.emit('drawcard', { cards: newGame.getCurCard() });
-      newGame.nextTurn();
-      newGame.getCurUser().socket.emit('yourturn');
+      socket.broadcast.to(id).emit('nextTurn',
+       { cards: newGame.getCurCard(), token: newGame.getCurToken(), players: newGame.getUsers() });
+      newGame.getCurSocket().emit('yourturn');
       // newGame.get_users().forEach((user)=>{user.socket.emit("test","hello");});
     });
 
-    socket.on('take_token', (data) => {
+    socket.on('takeToken', (data, id) => {
+      console.log('take token', data);
+      const newGame = GameList[id];
       newGame.takeToken(data);
-      socket.broadcast.emit('token', { token: newGame.getCurToken() });
-      newGame.nextTurn();
-      newGame.getCurUser().socket.emit('yourturn');
+      socket.emit('nextTurn', { token: newGame.getCurToken(), players: newGame.getUsers() });
+      socket.broadcast.to(id).emit('nextTurn',
+        { token: newGame.getCurToken(), players: newGame.getUsers() });
+      newGame.getCurSocket().emit('yourturn');
     });
 
+    socket.on('preserveCard', (data, id) => {
+      console.log('preserveCard', data);
+      const newGame = GameList[id];
+      newGame.preserveCard(data);
+      socket.emit('nextTurn', { cards: newGame.getCurCard(), token: newGame.getCurToken(),
+        players: newGame.getUsers() });
+      socket.broadcast.to(id).emit('nextTurn',
+        { cards: newGame.getCurCard(), token: newGame.getCurToken(), players: newGame.getUsers() });
+      newGame.getCurSocket().emit('yourturn');
+    });
+
+    socket.on('takeTokenReturn', (data, id) => {
+      console.log('take token return', data);
+      const newGame = GameList[id];
+      newGame.takeTokenReturn(data);
+      socket.emit('nextTurn', { token: newGame.getCurToken(), players: newGame.getUsers() });
+      socket.broadcast.to(id).emit('nextTurn',
+        { token: newGame.getCurToken(), players: newGame.getUsers() });
+      newGame.getCurSocket().emit('yourturn');
+    });
+
+
+    // handle disconnect
+
+    socket.on('disconnect', () => {} );
     // setInterval(()=>{socket.emit('test',{hey:"het"});},1000)
     // notify other clients that a new user has joined
+    /*
     socket.broadcast.emit('user:join', {
       name,
     });
@@ -126,5 +131,6 @@ exports = module.exports = (io) => {
       });
       userNames.free(name);
     });
+    */
   });
 };

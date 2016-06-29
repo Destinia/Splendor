@@ -12,6 +12,7 @@ connection.connect();
 
 exports = module.exports = (io) => {
   io.sockets.on('connection', (socket) => {
+    socket.join('Lobby');
     socket.on('mountOnLobby', () => {
       // console.log('mount here');
       socket.emit('roomList', LobbyServer.roomList);
@@ -20,7 +21,7 @@ exports = module.exports = (io) => {
     socket.on('CreateRoomOnLobby', (data) => {
       console.log(data);
       LobbyServer.createRoom(data.roomName, data.owner);
-      socket.broadcast.emit('roomList', LobbyServer.roomList);
+      socket.broadcast.to('Lobby').emit('roomList', LobbyServer.roomList);
     });
 
     socket.on('LoginOnLobby', (data) => {
@@ -45,7 +46,7 @@ exports = module.exports = (io) => {
       console.log(roomId);
       console.log(LobbyServer.roomList[roomId]);
       LobbyServer.roomList[roomId].nowPlayerNum += 1;
-      socket.broadcast.emit('roomList', LobbyServer.roomList);
+      socket.broadcast.to('Lobby').emit('roomList', LobbyServer.roomList);
     });
   });
 };
