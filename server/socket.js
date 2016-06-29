@@ -53,7 +53,7 @@ exports = module.exports = (io) => {
       const newGame = GameList[id];
       newGame.takeCard(data);
       socket.emit('nextTurn', { cards: newGame.getCurCard(),
-        token: newGame.getCurUser().token, players: newGame.getUsers() }
+        token: newGame.getCurToken(), players: newGame.getUsers() }
       );
       socket.broadcast.to(id).emit('nextTurn',
        { cards: newGame.getCurCard(), token: newGame.getCurToken(), players: newGame.getUsers() });

@@ -163,13 +163,14 @@ export const purchase = (card, index, socket) =>
     const { userToken, currency, curPlayer, tokenTaked, token, roomId } = getState();
     if (curPlayer && tokenTaked.length === 0 && checkout(card.price, userToken, currency)) {
       const need = Object.keys(card.price).reduce((owned, key) => {
-        const price = card[key];
         if (key !== 'Gold') {
+          const price = card.price[key];
           const pay = price - currency[key];
           if (pay > 0) {
             if (pay <= userToken[key]) {
               userToken[key] -= pay;
               token[key] += pay;
+              // return {}
             } else {
               token[key] += userToken[key];
               userToken[key] = 0;
