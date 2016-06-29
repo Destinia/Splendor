@@ -23,7 +23,7 @@ class Login extends React.Component {
   handleClick() {
     const { typingUserName, typingPassword, setUserName } = this.props;
     const { socket } = this.props.route;
-
+    const { router } = this.context;
     if (typingUserName !== '' && typingPassword !== '') {
       socket.emit('LoginOnLobby', {
         userName: typingUserName,
@@ -32,6 +32,7 @@ class Login extends React.Component {
       socket.on('Authenticated', (data) => {
         console.log(data);
         setUserName(typingUserName);
+        router.push('/Lobby');
       });
       console.log('==================================');
     }
@@ -65,7 +66,7 @@ class Login extends React.Component {
                   <button
                     type="button" className="btn btn-primary" onClick={handleClick}
                   >
-                    <Link to="/Lobby">Login</Link>
+                    Login
                   </button>
                 </div>
               </div>
@@ -86,4 +87,7 @@ Login.propTypes = {
   typingPassword: PropTypes.string.isRequired,
 };
 
+Login.contextTypes = {
+  router: PropTypes.object.isRequired,
+};
 export default Login;
