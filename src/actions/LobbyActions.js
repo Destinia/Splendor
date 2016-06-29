@@ -10,6 +10,8 @@ export const SET_USER_NAME = 'SET_USER_NAME';
 export const SET_TO_OWNER = 'SET_TO_OWNER';
 export const SET_ENTER_ROOM = 'SET_ENTER_ROOM';
 
+export const SET_USER_AUTH = 'SET_USER_AUTH';
+
 export const createRoom = (roomName, owner) => ({ type: CREATE_ROOM, roomName, owner });
 
 export const updateRoom = (newRoomList) =>
@@ -45,5 +47,10 @@ export const setToOwner = () =>
 export const setEnterRoom = (roomId) =>
   (dispatch) => {
     dispatch({ type: SET_ENTER_ROOM, roomId });
+  };
+
+export const setUserAuth = (loginInfo) =>
+  (dispatch) => {
+    dispatch({ type: SET_USER_AUTH, loginInfo });
   };
 
