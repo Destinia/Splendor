@@ -21,6 +21,7 @@ class RoomList extends React.Component {
 
   handleEnterRoom(event, roomId) {
     const { socket } = this.props.route;
+    const { router } = this.context;
     const { updateRoom, roomList } = this.props;
     const room = roomList[roomId];
     if (room.nowPlayerNum < 4) {
@@ -29,6 +30,7 @@ class RoomList extends React.Component {
       socket.on('roomList', (data) => {
         updateRoom(data);
       });
+      router.push(`/game?roomId=${roomId}`);
     }
   }
 
@@ -74,6 +76,10 @@ RoomList.propTypes = {
   roomList: PropTypes.array.isRequired,
   route: PropTypes.any.isRequired,
   updateRoom: PropTypes.func.isRequired,
+};
+
+RoomList.contextTypes = {
+  router: PropTypes.object.isRequired,
 };
 
 export default RoomList;
