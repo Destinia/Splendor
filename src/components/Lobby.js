@@ -15,7 +15,7 @@ class Lobby extends React.Component {
     }
     return (
       <li>
-        <Link to="/Lobby/CreateRoom">Create Room</Link>;
+        <Link to="/Lobby/CreateRoom">Create Room</Link>
       </li>
     );
   }

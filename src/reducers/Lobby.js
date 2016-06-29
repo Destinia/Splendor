@@ -5,6 +5,7 @@ import {
   TYPE_PASSWORD,
   SET_USER_NAME,
   SET_TO_OWNER,
+  SET_ENTER_ROOM,
     } from '../actions/LobbyActions.js';
 
 export function roomList(state = {}, action) {
@@ -58,5 +59,14 @@ export function isOwner(state = false, action) {
       return true;
     default:
       return state;
+  }
+}
+
+export function roomId(state = '', action) {
+  switch (action.type) {
+    case SET_ENTER_ROOM:
+      return action.roomId;
+    default:
+      return '';
   }
 }

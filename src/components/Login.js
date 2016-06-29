@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import '../css/bootstrap-material-design.css';
+import '../css/ripples.min.css';
 import '../css/center-util.css';
 
 class Login extends React.Component {
@@ -55,6 +56,8 @@ class Login extends React.Component {
                     onChange={(e) => handleChange(e, 'username')}
                   />
                 </div>
+              </div>
+              <div className="form-group">
                 <div className="col-md-12">
                   <input
                     type="password" className="form-control" placeholder="Password"
