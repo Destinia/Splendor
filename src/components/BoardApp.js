@@ -24,6 +24,15 @@ class BoardApp extends Component {
       addPlayer(data);
     });
   }
+
+  helpButton() {
+    const Width = 548;
+    const Height = 325;
+    const Top = (window.screen.availHeight - 30 - Height) / 2;
+    const Left = (window.screen.availWidth - 10 - Width) / 2;
+    window.open('/helpMessage', 'helpMessage',
+      `toolbar=0,status=0,width=${Width},height=${Height},left=${Left}top=${Top}`);
+  }
   // <button>{(curPlayer) ? 'me' : 'others'}</button>
 
   render() {
@@ -46,6 +55,7 @@ class BoardApp extends Component {
               <Nobel nobel={nobel} takeNobel={takeNobel} />
             </div>
             <div className="col-sm-2">
+              <img src="/public/images/helpButton.ico" role="presentation" className="help-button" onClick={this.helpButton} />
               <Token token={token} takeToken={takeToken} socket={socket} />
             </div>
           </div>

@@ -11,6 +11,13 @@
 	background-image: url(/public/images/splendor-loading-screen.png);
 }
 
+img.help-button {
+	width: 30px;
+	position:absolute;
+	right:20px;
+	top: 20px;
+}
+
 .background h1 {
 	color:#FFF;
 	align: center;

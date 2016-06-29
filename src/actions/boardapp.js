@@ -143,17 +143,34 @@ export const returnToken = (type, socket) =>
     }
   };
 
-const checkout = (price, userToken, currency) => {
-  const owned = Object.keys(userToken).reduce((own, key) => {
+const countGold = (price, userToken, currency) => (
+  Object.keys(userToken).reduce((own, key) => {
     if (key !== 'Gold') {
       if (userToken[key] + currency[key] <= price[key]) {
         return own + price[key] - userToken[key] - currency[key];
       }
     }
     return own;
-  }, 0);
-  return (owned <= userToken.Gold);
+  }, 0)
+);
+
+const countNextToken = (price, userToken, token, currency) => {
+  const Gold = countGold(price, userToken, currency);
+  const nextUserToken = Object.keys(price).reduce((prev, key) => (
+        { ...prev, [key]: ((userToken[key] - price[key]) >= 0) ? (userToken[key] - price[key]) : 0 }
+      ), {});
+  nextUserToken.Gold = userToken.Gold - Gold;
+  const nextToken = Object.keys(price).reduce((prev, key) => (
+      { ...prev, [key]: ((userToken[key] - price[key]) >= 0) ? token[key] + price[key] : token[key] + userToken[key] }
+    ), {});
+  nextToken.Gold = token.Gold + Gold;
+  return { nextUserToken, nextToken };
 };
+
+
+const checkout = (price, userToken, currency) =>
+  (countGold(price, userToken, currency) <= userToken.Gold);
+
 
 const updatePurchase = (card, userToken, token) =>
   ({ type: UPDATE_PURCHASE, card, userToken, token });
@@ -162,27 +179,42 @@ export const purchase = (card, index, socket) =>
   (dispatch, getState) => {
     const { userToken, currency, curPlayer, tokenTaked, token, roomId } = getState();
     if (curPlayer && tokenTaked.length === 0 && checkout(card.price, userToken, currency)) {
-      const need = Object.keys(card.price).reduce((owned, key) => {
-        if (key !== 'Gold') {
-          const price = card.price[key];
-          const pay = price - currency[key];
-          if (pay > 0) {
-            if (pay <= userToken[key]) {
-              userToken[key] -= pay;
-              token[key] += pay;
-              // return {}
-            } else {
-              token[key] += userToken[key];
-              userToken[key] = 0;
-              return owned + (pay - userToken[key]);
-            }
+      /*const next = Object.keys(card.price).reduce((prev, key) => {
+        const price = card.price[key];
+        const pay = price - currency[key];
+        if (pay > 0) {
+          if (pay <= userToken[key]) {
+            return ({ userToken: { ...prev.userToken, [key]: userToken[key] - pay },
+              token: { ...prev.token, [key]: token[key] + pay }, owned: prev.owned,
+            });
+          }
+          return ({ userToken: { ...prev.userToken, [key]: 0 },
+              token: { ...prev.token, [key]: token[key] + userToken[key] },
+              owned: prev.owned + (pay - userToken[key]),
+          });
+        }
+      }, { userToken: {}, token: {}, owned: 0 });*/
+      /*Object.keys(card.price).forEach((key) => {
+        const price = card.price[key];
+        const pay = price - currency[key];
+        if (pay > 0) {
+          if (pay <= userToken[key]) {
+            userToken[key] -= pay;
+            token[key] += pay;
+          } else {
+            token[key] += userToken[key];
+            userToken[key] = 0;
+            userToken.Gold -= (price - userToken.token[key]);
           }
         }
-        return owned;
-      }, 0);
-      userToken.Gold -= need;
-      token.Gold += need;
-      dispatch(updatePurchase(card, userToken, token));
+      });*/
+
+      // next.userToken.Gold = userToken.Gold - next.owned;
+      // next.token.Gold = token.Gold + next.owned;
+
+      const NextToken = countNextToken(card.price, userToken, token, currency);
+      console.log(NextToken);
+      dispatch(updatePurchase(card, NextToken.nextUserToken, NextToken.nextToken));
       socket.emit('card', card, roomId);
       if (index < 0) {
         dispatch({ type: UPDATE_PRESERVED, card });

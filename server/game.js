@@ -94,27 +94,21 @@ exports = module.exports = function createGame(id) {
   const nextTurn = () => { curUser = (curUser === users.length - 1) ? 0 : curUser + 1; };
   // assume front-end have checked
   const checkout = (card) => {
-    users[curUser].currency[card.type] += 1;
-    const need = Object.keys(card.price).reduce((owned, key) => {
-
-      if (key !== 'Gold') {
-        const price = card.price[key];
-        const pay = price - users[curUser].currency[key];
-        if (pay > 0) {
-          if (pay <= users[curUser].token[key]) {
-            users[curUser].token[key] -= pay;
-            token[key] += pay;
-          } else {
-            token[key] += users[curUser].token[key];
-            users[curUser].token[key] = 0;
-            return owned + (price - users[curUser].token[key]);
-          }
+    Object.keys(card.price).forEach((key) => {
+      const price = card.price[key];
+      const pay = price - users[curUser].currency[key];
+      if (pay > 0) {
+        if (pay <= users[curUser].token[key]) {
+          users[curUser].token[key] -= pay;
+          curToken[key] += pay;
+        } else {
+          curToken[key] += users[curUser].token[key];
+          users[curUser].token[key] = 0;
+          users[curUser].token.Gold -= (price - users[curUser].token[key]);
         }
       }
-      return owned;
-    }, 0);
-    users[curUser].token.Gold -= need;
-    token.Gold += need;
+    });
+    users[curUser].currency[card.type] += 1;
   };
 	// TODO front_end render no card(null)
   const score = (card) => {
