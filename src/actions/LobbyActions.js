@@ -7,8 +7,7 @@ export const TYPE_USER_NAME = 'TYPE_USER_NAME';
 export const TYPE_PASSWORD = 'TYPE_PASSWORD';
 
 export const SET_USER_NAME = 'SET_USER_NAME';
-
-export const PLAYER_NUM_ADD = 'PLAYER_NUM_ADD';
+export const SET_TO_OWNER = 'SET_TO_OWNER';
 
 export const createRoom = (roomName, owner) => ({ type: CREATE_ROOM, roomName, owner });
 
@@ -37,3 +36,7 @@ export const setUserName = (userName) =>
     dispatch({ type: SET_USER_NAME, userName });
   };
 
+export const setToOwner = () =>
+  (dispatch) => {
+    dispatch({ type: SET_TO_OWNER });
+  };

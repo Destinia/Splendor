@@ -19,13 +19,18 @@ class CreateRoom extends React.Component {
 
   handleClick() {
     const { socket } = this.props.route;
-    const { typingRoomName, userName } = this.props;
-    console.log('room name: ', typingRoomName);
-    console.log('user name: ', userName);
-    socket.emit('CreateRoomOnLobby', {
-      roomName: typingRoomName,
-      owner: userName,
-    });
+    const { setToOwner, typingRoomName, userName } = this.props;
+    const { router } = this.context;
+    // console.log('room name: ', typingRoomName);
+    // console.log('user name: ', userName);
+    if (typingRoomName !== '') {
+      socket.emit('CreateRoomOnLobby', {
+        roomName: typingRoomName,
+        owner: userName,
+      });
+      setToOwner();
+      router.push('/Lobby/RoomList');
+    }
   }
 
   render() {
@@ -63,8 +68,13 @@ class CreateRoom extends React.Component {
 CreateRoom.propTypes = {
   route: PropTypes.object.isRequired,
   changeRoomName: PropTypes.func.isRequired,
+  setToOwner: PropTypes.func.isRequired,
   userName: PropTypes.string.isRequired,
   typingRoomName: PropTypes.string.isRequired,
+};
+
+CreateRoom.contextTypes = {
+  router: PropTypes.object.isRequired,
 };
 
 export default CreateRoom;
