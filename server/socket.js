@@ -72,6 +72,7 @@ exports = module.exports = (io) => {
     });
 
     socket.on('preserveCard', (data, id) => {
+      console.log('preserveCard', data);
       const newGame = GameList[id];
       newGame.preserveCard(data);
       socket.emit('nextTurn', { cards: newGame.getCurCard(), token: newGame.getCurToken(),
@@ -80,6 +81,21 @@ exports = module.exports = (io) => {
         { cards: newGame.getCurCard(), token: newGame.getCurToken(), players: newGame.getUsers() });
       newGame.getCurSocket().emit('yourturn');
     });
+
+    socket.on('takeTokenReturn', (data, id) => {
+      console.log('take token return', data);
+      const newGame = GameList[id];
+      newGame.takeTokenReturn(data);
+      socket.emit('nextTurn', { token: newGame.getCurToken(), players: newGame.getUsers() });
+      socket.broadcast.to(id).emit('nextTurn',
+        { token: newGame.getCurToken(), players: newGame.getUsers() });
+      newGame.getCurSocket().emit('yourturn');
+    });
+
+
+    // handle disconnect
+
+    socket.on('disconnect', () => {} );
     // setInterval(()=>{socket.emit('test',{hey:"het"});},1000)
     // notify other clients that a new user has joined
     /*

@@ -16,6 +16,7 @@ export const UPDATE_USERDATA = 'UPDATE_USERDATA';
 export const TAKE_NOBEL = 'TAKE_NOBEL';
 export const PRESERVE_CARD = 'PRESERVE_CARD';
 export const UPDATE_PRESERVED = 'UPDATE_PRESERVED';
+export const RETURN_TOKEN_OVER = 'RETURN_TOKEN_OVER';
 
 export const updateToken = (tokens) => ({ type: UPDATE_TOKEN, tokens });
 
@@ -62,6 +63,8 @@ export const updateUserData = (data) => ({ type: UPDATE_USERDATA, ...data });
 
 const updateTokenTaked = (type) => ({ type: TAKE_TOKEN, token: type });
 
+const countTokens = (tokens) => Object.keys(tokens).reduce((prev, key) => (prev + tokens[key]), 0);
+
 export const takeToken = (type, socket) =>
   (dispatch, getState) => {
     const { tokenTaked, token, curPlayer, roomId } = getState();
@@ -70,26 +73,46 @@ export const takeToken = (type, socket) =>
         case 0:
           if (token[type] !== 0) {
             dispatch(updateTokenTaked(type));
+            // no remaining token
+            const remainToken = countTokens(getState().token);
+            if (remainToken === 0 && countTokens(getState().userToken) < 10
+                || (remainToken === getState().token[type])) {
+              dispatch(yourTurn());
+              socket.emit('takeToken', [type], roomId);
+            }
           }
           break;
         case 1:
           if (token[type] !== 0) {
             if (type === tokenTaked[0]) {
               // tokenTaked.push(type);
-              dispatch(yourTurn());
-              dispatch(updateTokenTaked(type));
-              socket.emit('takeToken', [type], roomId);
+              if (token[type] > 3) {
+                dispatch(updateTokenTaked(type));
+                if (countTokens(getState().userToken) < 10) {
+                  dispatch(yourTurn());
+                  socket.emit('takeToken', [type, type], roomId);
+                }
+              }
             } else {
               dispatch(updateTokenTaked(type));
+              const afterToken = getState().token;
+              const remainToken = countTokens(afterToken);
+              if (remainToken === 0 && countTokens(getState().userToken) < 10
+                || remainToken === afterToken[type] + afterToken[tokenTaked[0]]) {
+                dispatch(yourTurn());
+                socket.emit('takeToken', [...tokenTaked, type], roomId);
+              }
             }
           }
           break;
         case 2:
           if (token[type] !== 0) {
             if (type !== tokenTaked[0] && type !== tokenTaked[1]) {
-              dispatch(yourTurn());
               dispatch(updateTokenTaked(type));
-              socket.emit('takeToken', [...tokenTaked, type], roomId);
+              if (countTokens(getState().userToken) < 10) {
+                dispatch(yourTurn());
+                socket.emit('takeToken', [...tokenTaked, type], roomId);
+              }
             }
           }
           break;
@@ -101,12 +124,21 @@ export const takeToken = (type, socket) =>
 
 const updateTokenReturn = (type) => ({ type: RETURN_TOKEN, token: type });
 
-export const returnToken = (type) =>
+export const returnToken = (type, socket) =>
   (dispatch, getState) => {
-    const { curPlayer, tokenTaked } = getState();
-    if (curPlayer) {
+    const { curPlayer, tokenTaked, userToken, roomId } = getState();
+    if (curPlayer && userToken[type] !== 0) {
+      // return token
       if (tokenTaked.findIndex((tar) => (tar === type)) >= 0) {
         dispatch(updateTokenReturn(type));
+      } else if (countTokens(userToken) > 9) {
+        dispatch(updateTokenReturn(type));
+        dispatch({ type: RETURN_TOKEN_OVER, token: type });
+        if (countTokens(getState().userToken) < 10) {
+          dispatch(yourTurn());
+          socket.emit('takeTokenReturn',
+            { takeToken: tokenTaked, returnToken: getState().returnedToken }, roomId);
+        }
       }
     }
   };

@@ -5,7 +5,7 @@ import '../css/cards.css';
 
 
 const Hand = ({ userToken, currency, userData, curPlayer, returnToken, score, purchase, socket, preserved }) => {
-  const handleClick = (type) => () => returnToken(type);
+  const handleClick = (type) => () => returnToken(type, socket);
   // const testCard = {"price":{"Diamond":0,"Sapphire":3,"Emerald":0,"Ruby":0,"Agate":0},"score":0,"level":"bot","type":"Diamond"};
   const createCard = (card) => {
     const renderToken = (token) => {

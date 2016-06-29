@@ -16,14 +16,22 @@ import {
         TAKE_NOBEL,
         PRESERVE_CARD,
         UPDATE_PRESERVED,
+        RETURN_TOKEN_OVER,
         } from '../actions/boardapp';
-
+/** ****initial value********/
 const initToken = { Emerald: 0, Sapphire: 0, Ruby: 0, Diamond: 0, Agate: 0, Gold: 0 };
 const initUserToken = { Emerald: 0, Sapphire: 0, Ruby: 0, Diamond: 0, Agate: 0, Gold: 0 };
 const initCurToken = { Emerald: 0, Sapphire: 0, Ruby: 0, Diamond: 0, Agate: 0, Gold: 0 };
 const initCard = { top: [], mid: [], bot: [] };
 const initUserData = { name: '', img: '' };
-
+/** ******util function**********/
+const compareToken = (token1, token2) =>
+  Object.keys(token1).reduce((prev, key) =>
+    ((token1[key] === token2[key]) && prev)
+  , true);
+const compareCard = (card1, card2) =>
+  (card1.score === card2.score && card1.level === card2.level
+    && card1.type === card2.type && compareToken(card1.price, card2.price));
 
 export function inited(state = true, action) {
   switch (action.type) {
@@ -153,7 +161,7 @@ export function token(state = initToken, action) {
       return action.token;
     }
     case PRESERVE_CARD: {
-      return { ...state, Gold: state.Gold - 1 };
+      return { ...state, Gold: (state.Gold) ? state.Gold - 1 : 0 };
     }
     default: {
       return state;
@@ -164,7 +172,7 @@ export function token(state = initToken, action) {
 export function currency(state = initCurToken, action) {
   switch (action.type) {
     case UPDATE_PURCHASE: {
-      return state[action.card.type] + 1;
+      return { ...state, [action.card.type]: state[action.card.type] + 1 };
     }
     default: {
       return state;
@@ -184,7 +192,7 @@ export function userToken(state = initUserToken, action) {
       return { ...state, [action.token]: state[action.token] - 1 };
     }
     case PRESERVE_CARD: {
-      return { ...state, Gold: state.Gold + 1 };
+      return { ...state, Gold: (state.Gold) ? state.Gold + 1 : 0 };
     }
     default: {
       return state;
@@ -208,9 +216,9 @@ export function cards(state = initCard, action) {
     }
     case PRESERVE_CARD: {
       return {
-        top: state.top.filter((card) => (card !== action.card)),
-        mid: state.mid.filter((card) => (card !== action.card)),
-        bot: state.bot.filter((card) => (card !== action.card)),
+        top: state.top.filter((card) => (!compareCard(card, action.card))),
+        mid: state.mid.filter((card) => (!compareCard(card, action.card))),
+        bot: state.bot.filter((card) => (!compareCard(card, action.card))),
       };
     }
     default: {
@@ -267,7 +275,21 @@ export function preserved(state = [], action) {
       return [...state, action.card];
     }
     case UPDATE_PRESERVED: {
-      return state.filter((card) => (card !== action.card));
+      return state.filter((card) => (!compareCard(card, action.card)));
+    }
+    default: {
+      return state;
+    }
+  }
+}
+
+export function returnedToken(state = [], action) {
+  switch (action.type) {
+    case RETURN_TOKEN_OVER: {
+      return [...state, action.token];
+    }
+    case YOUR_TURN: {
+      return [];
     }
     default: {
       return state;

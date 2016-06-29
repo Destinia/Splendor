@@ -80,6 +80,9 @@ exports = module.exports = function createGame(id) {
   };
 
 /** *********************Util function**********************/
+  const countTokens = (tokens) =>
+    Object.keys(tokens).reduce((prev, key) => (prev + tokens[key]), 0);
+
   const compareToken = (token1, token2) =>
     Object.keys(token1).reduce((prev, key) =>
       ((token1[key] === token2[key]) && prev)
@@ -122,17 +125,11 @@ exports = module.exports = function createGame(id) {
 
  /** ************End Turn movement*************/
   const takeToken = (types) => {
-    if (types.length === 3) {
-      types.forEach((type) => {
-        curToken[type] -= 1;
-        users[curUser].token[type] += 1;
-      });
-    } else if (types.length === 1) {
-      curToken[types[0]] -= 2;
-      users[curUser].token[types[0]] += 2;
-    } else {
-      console.log('error', types);
-    }
+    types.forEach((type) => {
+      curToken[type] -= 1;
+      users[curUser].token[type] += 1;
+    });
+
     console.log(`Room ${roomId} user${curUser} take token`);
     nextTurn();
   };
@@ -149,6 +146,16 @@ exports = module.exports = function createGame(id) {
     console.log(`Room ${roomId} user${curUser} purchase card`);
     nextTurn();
 		// token_back(price);
+  };
+
+  const takeTokenReturn = (tokens) => {
+    tokens.returnToken.forEach((type) => {
+      if (users[curUser].token[type] !== 0) {
+        users[curUser].token[type]--;
+        curToken[type]++;
+      }
+    });
+    takeToken(tokens.tokeToken);
   };
 
   const preserveCard = (card) => {
@@ -200,6 +207,7 @@ exports = module.exports = function createGame(id) {
     takeNobel,
     preserveCard,
     compareCard,
+    takeTokenReturn,
     // for testing no allowed to take
     /*****
     deck,
