@@ -8,6 +8,7 @@ import RoomListPage from './containers/RoomListPage';
 import CreateRoomPage from './containers/CreateRoomPage';
 import LoginPage from './containers/LoginPage';
 import HomePage from './containers/HomePage';
+import HelpPage from './containers/HelpPage';
 
 import io from 'socket.io-client';
 const socket = io('localhost:8080', { path: '/api/lobby' });
@@ -36,6 +37,7 @@ export default (
     </Route>
     <Route path="/game" component={BoardappPage} />
     <Route path="/another" component={AnotherPage} />
+    <Route path="/HelpMessage" component={HelpPage} />
     <Route path="*" component={NotFoundPage} />
   </Route>
 );

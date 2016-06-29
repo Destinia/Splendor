@@ -22,10 +22,13 @@ class Lobby extends React.Component {
 
   render() {
     const { isOwner } = this.props;
+    const { router } = this.context;
+    const { route } = this.props;
+    console.log(route);
     // const disabled = (isOwner) ? 'disabled' : '';
     return (
       <div>
-        <ul className="nav nav-tabs">
+        <ul className="nav nav-tabs nav-setting">
           <li>
             <Link to="/Lobby/Home">Home</Link>
           </li>
@@ -46,4 +49,7 @@ Lobby.propTypes = {
   children: PropTypes.any.isRequired,
 };
 
+Lobby.contextTypes = {
+  router: PropTypes.object.isRequired,
+};
 export default Lobby;

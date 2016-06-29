@@ -3,6 +3,10 @@
 	padding-right: 20px;
 }
 
+.nav-setting {
+	max-height: 40px;
+}
+
 .lobby-bg {
 	position: fixed; 
 	top: 0; 
@@ -21,4 +25,9 @@
 
 .disabled-link {
   pointer-events: none;
+}
+
+.help-message-setting {
+	max-width: 548px;
+	max-height: 325px;
 }
