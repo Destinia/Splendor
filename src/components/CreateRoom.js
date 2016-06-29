@@ -32,18 +32,18 @@ class CreateRoom extends React.Component {
     return (
       <div className="col-md-4 col-md-offset-4 vcenter">
         <div className="well bs-component">
-          <legend>Enter the Room Name</legend>
+          <legend className="text-center">Enter the Room Name</legend>
           <form className="form-horizontal">
             <fieldset>
               <div className="form-group">
                 <div className="col-md-12">
                   <input
-                    type="text" className="form-control" placeholder="UserName"
+                    type="text" className="form-control text-center" placeholder="UserName"
                     onChange={this.handleInputRoomName}
                   />
                 </div>
                 <div className="form-group">
-                  <div className="col-md-4 col-md-offset-4">
+                  <div className="col-md-12 text-center">
                     <button
                       type="button" className="btn btn-primary" onClick={this.handleClick}
                     >
