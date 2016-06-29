@@ -20,6 +20,7 @@ exports = module.exports = (io) => {
     socket.on('CreateRoomOnLobby', (data) => {
       console.log(data);
       LobbyServer.createRoom(data.roomName, data.owner);
+      socket.broadcast.emit('roomList', LobbyServer.roomList);
     });
 
     socket.on('LoginOnLobby', (data) => {
@@ -44,7 +45,7 @@ exports = module.exports = (io) => {
       console.log(roomId);
       console.log(LobbyServer.roomList[roomId]);
       LobbyServer.roomList[roomId].nowPlayerNum += 1;
-      // console.log(LobbyServer.roomList[roomId].nowPlayerNum);
+      socket.broadcast.emit('roomList', LobbyServer.roomList);
     });
   });
 };
