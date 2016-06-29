@@ -4,8 +4,9 @@ export const JOIN_ROOM = 'JOIN_ROOM';
 
 export const TYPE_ROOM_NAME = 'TYPE_ROOM_NAME';
 export const TYPE_USER_NAME = 'TYPE_USER_NAME';
-
 export const TYPE_PASSWORD = 'TYPE_PASSWORD';
+
+export const SET_USER_NAME = 'SET_USER_NAME';
 
 export const createRoom = (roomName, owner) => ({ type: CREATE_ROOM, roomName, owner });
 
@@ -27,4 +28,9 @@ export const changeUserName = (typingStr) =>
 export const changePassword = (typingStr) =>
   (dispatch) => {
     dispatch({ type: TYPE_PASSWORD, typingStr });
+  };
+
+export const setUserName = (userName) =>
+  (dispatch) => {
+    dispatch({ type: SET_USER_NAME, userName });
   };

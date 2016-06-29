@@ -13,10 +13,6 @@ module.exports = {
       nowPlayerNum: 0,
     };
 
-    LobbyData.roomList.push(roomObj);
-  },
-  isUser: function isUser(userName, password) {
-    console.log(userName, password);
-    return true;
+    LobbyData.roomList[id] = roomObj;
   },
 };

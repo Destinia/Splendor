@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import { Link } from 'react-router';
 import '../css/bootstrap-material-design.css';
 import '../css/center-util.css';
 
@@ -20,7 +21,7 @@ class Login extends React.Component {
   }
 
   handleClick() {
-    const { typingUserName, typingPassword } = this.props;
+    const { typingUserName, typingPassword, setUserName } = this.props;
     const { socket } = this.props.route;
 
     if (typingUserName !== '' && typingPassword !== '') {
@@ -28,7 +29,11 @@ class Login extends React.Component {
         userName: typingUserName,
         password: typingPassword,
       });
-      socket.on('Authenticated', (data) => { console.log(data); });
+      socket.on('Authenticated', (data) => {
+        console.log(data);
+        setUserName(typingUserName);
+      });
+      console.log('==================================');
     }
   }
 
@@ -59,7 +64,9 @@ class Login extends React.Component {
                 <div className="col-md-4 col-md-offset-4">
                   <button
                     type="button" className="btn btn-primary" onClick={handleClick}
-                  >Login</button>
+                  >
+                    <Link to="/Lobby">Login</Link>
+                  </button>
                 </div>
               </div>
             </fieldset>
@@ -74,6 +81,7 @@ Login.propTypes = {
   route: PropTypes.object.isRequired,
   changePassword: PropTypes.func.isRequired,
   changeUserName: PropTypes.func.isRequired,
+  setUserName: PropTypes.func.isRequired,
   typingUserName: PropTypes.string.isRequired,
   typingPassword: PropTypes.string.isRequired,
 };

@@ -1,6 +1,7 @@
+
 module.exports = {
-  // roomList: [],
-  roomList: [{
+  roomList: {},
+  /* roomList: [{
     roomName: 'NO AFK!!!!!',
     roomId: '46Juzcyx',
     owner: 'Allen',
@@ -10,5 +11,5 @@ module.exports = {
     roomId: '2WEKaVNO',
     owner: 'Jeff',
     nowPlayerNum: 4,
-  }],
+  }],*/
 };

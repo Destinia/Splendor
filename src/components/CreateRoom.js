@@ -25,9 +25,10 @@ class CreateRoom extends React.Component {
 
   handleClick() {
     const { socket } = this.props.route;
-    const { typingRoomName, typingUserName } = this.props;
+    const { typingRoomName, typingUserName, userName } = this.props;
     console.log('room name: ', typingRoomName);
     console.log('user name: ', typingUserName);
+    console.log('userName: ', userName);
     socket.emit('CreateRoomOnLobby', {
       roomName: typingRoomName,
       owner: typingUserName,
@@ -64,6 +65,7 @@ CreateRoom.propTypes = {
   route: PropTypes.object.isRequired,
   changeRoomName: PropTypes.func.isRequired,
   changeUserName: PropTypes.func.isRequired,
+  userName: PropTypes.string.isRequired,
   typingRoomName: PropTypes.string.isRequired,
   typingUserName: PropTypes.string.isRequired,
 };

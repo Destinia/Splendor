@@ -3,6 +3,7 @@ import {
   TYPE_ROOM_NAME,
   TYPE_USER_NAME,
   TYPE_PASSWORD,
+  SET_USER_NAME,
     } from '../actions/LobbyActions.js';
 
 export function roomList(state = [], action) {
@@ -36,6 +37,15 @@ export function typingPassword(state = '', action) {
   switch (action.type) {
     case TYPE_PASSWORD:
       return action.typingStr;
+    default:
+      return state;
+  }
+}
+
+export function userName(state = '', action) {
+  switch (action.type) {
+    case SET_USER_NAME:
+      return action.userName;
     default:
       return state;
   }

@@ -10,7 +10,7 @@ class RoomList extends React.Component {
     socket.on('roomList', (data) => {
       console.log('Here in Roomlist');
       console.log(data);
-      updateRoom(data);
+      // updateRoom(data);
     });
     console.log(this.props);
   }
