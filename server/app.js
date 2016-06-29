@@ -36,8 +36,8 @@ app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
 
 /* Start server */
 
-const server = app.listen(8080, 'localhost',function(){
-  console.log('API server on');
+const server = app.listen(8080, domain, () => {
+  console.log(`API server at ${domain}:8080`);
 });
 
 const io = new SocketIo(server, { path: '/api/game' });

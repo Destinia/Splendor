@@ -7,6 +7,7 @@ import io from 'socket.io-client';
 import '../css/BoardApp.css';
 
 const socket = io(`${location.hostname}:8080`, { path: '/api/game' });
+console.log(location.hostname);
 
 // const BoardappPage = () => (<div>test</div>);
 

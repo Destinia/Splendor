@@ -105,7 +105,7 @@ export const returnToken = (type) =>
   (dispatch, getState) => {
     const { curPlayer, tokenTaked } = getState();
     if (curPlayer) {
-      if (tokenTaked.findIndex((tar) => (tar === type)) > 0) {
+      if (tokenTaked.findIndex((tar) => (tar === type)) >= 0) {
         dispatch(updateTokenReturn(type));
       }
     }
@@ -130,8 +130,8 @@ export const purchase = (card, index, socket) =>
   (dispatch, getState) => {
     const { userToken, currency, curPlayer, tokenTaked, token, roomId } = getState();
     if (curPlayer && tokenTaked.length === 0 && checkout(card.price, userToken, currency)) {
-      const need = card.price.reduce((owned, price) => {
-        const key = price.key;
+      const need = Object.keys(card.price).reduce((owned, key) => {
+        const price = card[key];
         if (key !== 'Gold') {
           const pay = price - currency[key];
           if (pay > 0) {

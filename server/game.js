@@ -92,8 +92,8 @@ exports = module.exports = function createGame(id) {
   // assume front-end have checked
   const checkout = (card) => {
     users[curUser].currency[card.type] += 1;
-    const need = card.price.reduce((owned, price) => {
-      const key = price.key;
+    const need = Object.keys(card.price).reduce((owned, key) => {
+      const price = card[key];
       if (key !== 'Gold') {
         const pay = price - users[curUser].currency[key];
         if (pay > 0) {

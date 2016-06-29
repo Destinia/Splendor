@@ -3,7 +3,6 @@ const createGame = require('./game.js');
 
 const GameList = {};
 
-
 exports = module.exports = (io) => {
   io.sockets.on('connection', (socket) => {
     // send the new user their name and a list of users
