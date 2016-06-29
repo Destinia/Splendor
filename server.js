@@ -4,6 +4,7 @@ const express = require('express');
 const webpack = require('webpack');
 const config = require('./webpack.config');
 const port = process.env.PORT || 3000;
+const domain = (process.argv[2] === '-domain') ? process.argv[3] : 'localhost';
 require('./server/app');
 
 const app = express();
@@ -24,11 +25,11 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-app.listen(port, 'localhost', (err) => {
+app.listen(port, domain, (err) => {
   if (err) {
     console.log(err);
     return;
   }
 
-  console.log(`Listening at http://localhost:${port}`);
+  console.log(`Listening at http://${domain}:${port}`);
 });
