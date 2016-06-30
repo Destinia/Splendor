@@ -9,6 +9,7 @@ class BoardApp extends Component {
 
   componentDidMount() {
     const { socket, init, myTurn, updateToken, roomId, full, addPlayer, updateUserData, nextTurn } = this.props;
+    const { router } = this.context;
     console.log(roomId);
     // socket.join(roomId);
     const userName = 'here';
@@ -17,13 +18,13 @@ class BoardApp extends Component {
     socket.on('init', (data) => { init(data); });
     socket.on('nextTurn', (data) => { nextTurn(data); });
     socket.on('test', (data) => { console.log(data); });
-    socket.on('yourturn', myTurn);
     socket.on('token', (data) => { updateToken(data.token); });
     socket.on('addUser', (data) => { addPlayer(data); });
     socket.on('onTheTable', (data) => {
       updateUserData({ userData: data[data.length - 1], order: data.length - 1 });
       addPlayer(data);
     });
+    socket.on('GameBreak', () => { router.push('/Lobby'); });
   }
 
   helpButton() {
@@ -107,5 +108,9 @@ BoardApp.propTypes = {
   preserved: PropTypes.array.isRequired,
   preserveCard: PropTypes.func.isRequired,
 };
+
+BoardApp.contextTypes = {
+  router: PropTypes.object.isRequired,
+}
 
 export default BoardApp;

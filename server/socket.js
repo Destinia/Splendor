@@ -3,6 +3,8 @@ const createGame = require('./game.js');
 
 const GameList = {};
 
+const socketMapGame = {};
+
 exports = module.exports = (io) => {
   io.sockets.on('connection', (socket) => {
     // send the new user their name and a list of users
@@ -20,7 +22,7 @@ exports = module.exports = (io) => {
         }
 
         case 3: {
-          newGame.addUser(userName, socket);
+          newGame.addUser(userName);
           socket.emit('onTheTable', newGame.getUsers());
           socket.broadcast.to(roomId).emit('addUser', newGame.getUsers());
           newGame.init();
@@ -39,14 +41,13 @@ exports = module.exports = (io) => {
           break;
         }
         default : {
-          console.log('this.case');
-          newGame.addUser(socket);
+          console.log('addUser ', userName);
+          newGame.addUser(userName);
           socket.emit('onTheTable', newGame.getUsers());
           socket.broadcast.to(roomId).emit('addUser', newGame.getUsers());
         }
       }
     });
-
 
     socket.on('card', (data, id) => {
       console.log('purchase card', data);
@@ -56,8 +57,8 @@ exports = module.exports = (io) => {
         token: newGame.getCurToken(), players: newGame.getUsers() }
       );
       socket.broadcast.to(id).emit('nextTurn',
-       { cards: newGame.getCurCard(), token: newGame.getCurToken(), players: newGame.getUsers() });
-      newGame.getCurSocket().emit('yourturn');
+       { curUser: newGame.getCurUserId(), cards: newGame.getCurCard(),
+        token: newGame.getCurToken(), players: newGame.getUsers() });
       // newGame.get_users().forEach((user)=>{user.socket.emit("test","hello");});
     });
 
@@ -67,8 +68,7 @@ exports = module.exports = (io) => {
       newGame.takeToken(data);
       socket.emit('nextTurn', { token: newGame.getCurToken(), players: newGame.getUsers() });
       socket.broadcast.to(id).emit('nextTurn',
-        { token: newGame.getCurToken(), players: newGame.getUsers() });
-      newGame.getCurSocket().emit('yourturn');
+        { curUser: newGame.getCurUserId(), token: newGame.getCurToken(), players: newGame.getUsers() });
     });
 
     socket.on('preserveCard', (data, id) => {
@@ -78,8 +78,8 @@ exports = module.exports = (io) => {
       socket.emit('nextTurn', { cards: newGame.getCurCard(), token: newGame.getCurToken(),
         players: newGame.getUsers() });
       socket.broadcast.to(id).emit('nextTurn',
-        { cards: newGame.getCurCard(), token: newGame.getCurToken(), players: newGame.getUsers() });
-      newGame.getCurSocket().emit('yourturn');
+        { cards: newGame.getCurCard(), token: newGame.getCurToken(),
+          players: newGame.getUsers(), curUser: newGame.getCurUserId() });
     });
 
     socket.on('takeTokenReturn', (data, id) => {
@@ -88,7 +88,7 @@ exports = module.exports = (io) => {
       newGame.takeTokenReturn(data);
       socket.emit('nextTurn', { token: newGame.getCurToken(), players: newGame.getUsers() });
       socket.broadcast.to(id).emit('nextTurn',
-        { token: newGame.getCurToken(), players: newGame.getUsers() });
+        { token: newGame.getCurToken(), players: newGame.getUsers(), curUser: newGame.getCurUserId() });
       newGame.getCurSocket().emit('yourturn');
     });
 

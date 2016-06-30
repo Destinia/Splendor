@@ -236,12 +236,9 @@ export const purchase = (card, index, socket) =>
 export const takeNobel = (nobel, socket) =>
   (dispatch, getState) => {
     const { currency, roomId, order } = getState();
-    const enough = Object.keys(nobel.price).reduce((prev, key) => {
-      if (prev && currency[key] >= nobel.price[key]) {
-        return true;
-      }
-      return false;
-    }, true);
+    const enough = Object.keys(nobel.price).reduce((prev, key) =>
+      (prev && currency[key] >= nobel.price[key])
+    , true);
     if (enough) {
       dispatch({ type: TAKE_NOBEL, nobel });
       socket.emit('nobel', { nobel, order }, roomId);

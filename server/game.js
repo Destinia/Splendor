@@ -18,7 +18,6 @@ exports = module.exports = function createGame(id) {
   const token = () => ({ Emerald: 0, Sapphire: 0, Ruby: 0, Diamond: 0, Agate: 0, Gold: 0 });
   const users = [];
   let start = false;
-  const sockets = [];
   const roomId = id;
   const win = 15;
   let curCard = { top: [], mid: [], bot: [], nobel: [] };
@@ -32,7 +31,6 @@ exports = module.exports = function createGame(id) {
 
   const getRoomId = () => roomId;
 
-  const getCurSocket = () => sockets[curUser];
 
   const getUsers = () => users.map((user, index) =>
     (Object.assign({}, user, { curPlayer: (index === curUser) && start })));
@@ -40,6 +38,7 @@ exports = module.exports = function createGame(id) {
     console.log(curUser);
     return users[curUser];
   };
+  const getCurUserId = () => curUser;
   const getCurCard = () => ({ top: curCard.top, mid: curCard.mid, bot: curCard.bot });
   const getCurToken = () => curToken;
   const getNobel = () => curCard.nobel;
@@ -52,9 +51,8 @@ exports = module.exports = function createGame(id) {
     }
   );
 
-  const addUser = (name, socket) => {
+  const addUser = (name) => {
     users.push(createUser(name));
-    sockets.push(socket);
     console.log(users.length, 'player mount');
     // users.forEach((user) => { console.log(user.socket.id); });
   };
@@ -198,11 +196,11 @@ exports = module.exports = function createGame(id) {
     takeToken,
     addUser,
     getRoomId,
-    getCurSocket,
     takeNobel,
     preserveCard,
     compareCard,
     takeTokenReturn,
+    getCurUserId,
     // for testing no allowed to take
     /*****
     deck,
