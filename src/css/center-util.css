@@ -35,3 +35,7 @@
 .login-error-padding{
 	margin-top: 40px;
 }
+
+.nav-trans {
+	background-color: transparent;
+}

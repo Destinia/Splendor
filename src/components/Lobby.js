@@ -22,9 +22,7 @@ class Lobby extends React.Component {
 
   render() {
     const { isOwner } = this.props;
-    const { router } = this.context;
-    const { route } = this.props;
-    console.log(route);
+    console.log(this.props);
     // const disabled = (isOwner) ? 'disabled' : '';
     return (
       <div>
