@@ -1,0 +1,41 @@
+.roomtable-padding {
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+.nav-setting {
+	max-height: 40px;
+}
+
+.lobby-bg {
+	position: fixed; 
+	top: 0; 
+	left: 0; 
+	
+	/* Preserve aspet ratio */
+	min-width: 100%;
+	min-height: 100%;
+}
+
+.vcenter {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.disabled-link {
+  pointer-events: none;
+}
+
+.help-message-setting {
+	max-width: 548px;
+	max-height: 325px;
+}
+
+.login-error-padding{
+	margin-top: 40px;
+}
+
+.nav-trans {
+	background-color: transparent;
+}

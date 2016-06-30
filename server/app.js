@@ -43,3 +43,5 @@ const server = app.listen(8080, domain, () => {
 const io = new SocketIo(server, { path: '/api/game' });
 const socketevent = require('./socket')(io);
 
+const lobbyIo = new SocketIo(server, { path: '/api/lobby' });
+const lobbyEvent = require('./LobbySocket.js')(lobbyIo);

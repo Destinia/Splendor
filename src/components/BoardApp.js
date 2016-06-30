@@ -8,12 +8,12 @@ import Enemy from './Enemy';
 class BoardApp extends Component {
 
   componentDidMount() {
-    const { socket, init, myTurn, updateToken, roomId, full, addPlayer, updateUserData, nextTurn } = this.props;
+    const { socket, init, updateToken, roomId, full, addPlayer, updateUserData, nextTurn, userName } = this.props;
     const { router } = this.context;
     console.log(roomId);
     // socket.join(roomId);
-    const userName = 'here';
     socket.emit('mount', userName, roomId);
+    socket.on('shouldToLobby', () => { router.push('/Lobby'); });
     socket.on('full', full);// route back to lobby
     socket.on('init', (data) => { init(data); });
     socket.on('nextTurn', (data) => { nextTurn(data); });
@@ -107,6 +107,7 @@ BoardApp.propTypes = {
   takeNobel: PropTypes.func.isRequired,
   preserved: PropTypes.array.isRequired,
   preserveCard: PropTypes.func.isRequired,
+  userName: PropTypes.string.isRequired,
 };
 
 BoardApp.contextTypes = {

@@ -3,12 +3,15 @@ const createGame = require('./game.js');
 
 const GameList = {};
 
-const socketMapGame = {};
 
 exports = module.exports = (io) => {
   io.sockets.on('connection', (socket) => {
     // send the new user their name and a list of users
     socket.on('mount', (userName, roomId) => {
+      if (roomId === '') {
+        socket.emit('shouldToLobby');
+        return;
+      }
       socket.join(roomId);
       if (GameList[roomId] === undefined) {
         GameList[roomId] = createGame(roomId);
