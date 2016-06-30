@@ -22,11 +22,13 @@ class Lobby extends React.Component {
 
   render() {
     const { isOwner } = this.props;
-    console.log(this.props);
+    const { pathname } = this.props.routing.locationBeforeTransitions;
+    console.log(pathname);
+    const nacClass = (pathname === '/Lobby/Home') ? 'nav-trans' : '';
     // const disabled = (isOwner) ? 'disabled' : '';
     return (
       <div>
-        <ul className="nav nav-tabs nav-setting">
+        <ul className={`nav nav-tabs nav-setting ${nacClass}`}>
           <li>
             <Link to="/Lobby/Home">Home</Link>
           </li>
@@ -45,6 +47,7 @@ Lobby.propTypes = {
   route: PropTypes.any.isRequired,
   isOwner: PropTypes.bool.isRequired,
   children: PropTypes.any.isRequired,
+  routing: PropTypes.object.isRequired,
 };
 
 Lobby.contextTypes = {
