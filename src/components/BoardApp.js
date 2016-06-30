@@ -28,8 +28,8 @@ class BoardApp extends Component {
   }
 
   helpButton() {
-    const Width = 548;
-    const Height = 325;
+    const Width = 800;
+    const Height = 800;
     const Top = (window.screen.availHeight - 30 - Height) / 2;
     const Left = (window.screen.availWidth - 10 - Width) / 2;
     window.open('/helpMessage', 'helpMessage',

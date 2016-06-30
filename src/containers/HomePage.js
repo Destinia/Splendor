@@ -9,7 +9,7 @@ class HomePage extends React.Component {
       <div>
         <img
           src="/public/images/Splendor01.png" alt="background"
-          className="img-responsive"
+          className="bg"
         />
       </div>
     );
