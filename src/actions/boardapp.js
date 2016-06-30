@@ -17,6 +17,7 @@ export const TAKE_NOBEL = 'TAKE_NOBEL';
 export const PRESERVE_CARD = 'PRESERVE_CARD';
 export const UPDATE_PRESERVED = 'UPDATE_PRESERVED';
 export const RETURN_TOKEN_OVER = 'RETURN_TOKEN_OVER';
+export const OVER_TOKEN = 'OVER_TOKEN';
 
 export const updateToken = (tokens) => ({ type: UPDATE_TOKEN, tokens });
 
@@ -75,10 +76,13 @@ export const takeToken = (type, socket) =>
             dispatch(updateTokenTaked(type));
             // no remaining token
             const remainToken = countTokens(getState().token);
-            if (remainToken === 0 && countTokens(getState().userToken) < 10
-                || (remainToken === getState().token[type])) {
-              dispatch(yourTurn());
-              socket.emit('takeToken', [type], roomId);
+            if (remainToken === 0 || (remainToken === getState().token[type])) {
+              if (countTokens(getState().userToken) <= 10) {
+                dispatch(yourTurn());
+                socket.emit('takeToken', [type], roomId);
+              } else {
+                dispatch({ type: OVER_TOKEN });
+              }
             }
           }
           break;
@@ -88,19 +92,25 @@ export const takeToken = (type, socket) =>
               // tokenTaked.push(type);
               if (token[type] > 3) {
                 dispatch(updateTokenTaked(type));
-                if (countTokens(getState().userToken) < 10) {
+                if (countTokens(getState().userToken) <= 10) {
                   dispatch(yourTurn());
                   socket.emit('takeToken', [type, type], roomId);
+                } else {
+                  dispatch({ type: OVER_TOKEN });
                 }
               }
             } else {
               dispatch(updateTokenTaked(type));
               const afterToken = getState().token;
               const remainToken = countTokens(afterToken);
-              if (remainToken === 0 && countTokens(getState().userToken) < 10
-                || remainToken === afterToken[type] + afterToken[tokenTaked[0]]) {
-                dispatch(yourTurn());
-                socket.emit('takeToken', [...tokenTaked, type], roomId);
+              if (remainToken === 0 ||
+                remainToken === afterToken[type] + afterToken[tokenTaked[0]]) {
+                if (countTokens(getState().userToken) <= 10) {
+                  dispatch(yourTurn());
+                  socket.emit('takeToken', [...tokenTaked, type], roomId);
+                } else {
+                  dispatch({ type: OVER_TOKEN });
+                }
               }
             }
           }
@@ -109,9 +119,11 @@ export const takeToken = (type, socket) =>
           if (token[type] !== 0) {
             if (type !== tokenTaked[0] && type !== tokenTaked[1]) {
               dispatch(updateTokenTaked(type));
-              if (countTokens(getState().userToken) < 10) {
+              if (countTokens(getState().userToken) <= 10) {
                 dispatch(yourTurn());
                 socket.emit('takeToken', [...tokenTaked, type], roomId);
+              } else {
+                dispatch({ type: OVER_TOKEN });
               }
             }
           }
@@ -126,19 +138,18 @@ const updateTokenReturn = (type) => ({ type: RETURN_TOKEN, token: type });
 
 export const returnToken = (type, socket) =>
   (dispatch, getState) => {
-    const { curPlayer, tokenTaked, userToken, roomId } = getState();
+    const { curPlayer, tokenTaked, userToken, roomId, overToken } = getState();
     if (curPlayer && userToken[type] !== 0) {
       // return token
-      if (tokenTaked.findIndex((tar) => (tar === type)) >= 0) {
-        dispatch(updateTokenReturn(type));
-      } else if (countTokens(userToken) > 9) {
-        dispatch(updateTokenReturn(type));
+      if (overToken) {
         dispatch({ type: RETURN_TOKEN_OVER, token: type });
-        if (countTokens(getState().userToken) < 10) {
-          dispatch(yourTurn());
+        if (countTokens(getState().userToken) <= 10) {
           socket.emit('takeTokenReturn',
             { takeToken: tokenTaked, returnToken: getState().returnedToken }, roomId);
+          dispatch(yourTurn());
         }
+      } else if (tokenTaked.findIndex((tar) => (tar === type)) >= 0) {
+        dispatch(updateTokenReturn(type));
       }
     }
   };

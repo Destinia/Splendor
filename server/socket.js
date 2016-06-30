@@ -6,7 +6,7 @@ const GameList = {};
 exports = module.exports = (io) => {
   io.sockets.on('connection', (socket) => {
     // send the new user their name and a list of users
-    socket.on('mount', (roomId) => {
+    socket.on('mount', (userName, roomId) => {
       socket.join(roomId);
       if (GameList[roomId] === undefined) {
         GameList[roomId] = createGame(roomId);
@@ -20,7 +20,7 @@ exports = module.exports = (io) => {
         }
 
         case 3: {
-          newGame.addUser(socket);
+          newGame.addUser(userName, socket);
           socket.emit('onTheTable', newGame.getUsers());
           socket.broadcast.to(roomId).emit('addUser', newGame.getUsers());
           newGame.init();

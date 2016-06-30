@@ -45,15 +45,15 @@ exports = module.exports = function createGame(id) {
   const getNobel = () => curCard.nobel;
 
 /** **************** Initialization movement *************/
-  const createUser = () => (
-    { id: users.length, token: token(), score: 0, currency: token(), name: users.length,
+  const createUser = (name) => (
+    { id: users.length, token: token(), score: 0, currency: token(), name,
     imgSrc: `/public/images/portrait/portrait${users.length + 1}.jpg`,
     preserve: [],
     }
   );
 
-  const addUser = (socket) => {
-    users.push(createUser());
+  const addUser = (name, socket) => {
+    users.push(createUser(name));
     sockets.push(socket);
     console.log(users.length, 'player mount');
     // users.forEach((user) => { console.log(user.socket.id); });
@@ -150,7 +150,7 @@ exports = module.exports = function createGame(id) {
         curToken[type]++;
       }
     });
-    takeToken(tokens.tokeToken);
+    takeToken(tokens.takeToken);
   };
 
   const preserveCard = (card) => {

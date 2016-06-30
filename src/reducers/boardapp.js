@@ -17,6 +17,7 @@ import {
         PRESERVE_CARD,
         UPDATE_PRESERVED,
         RETURN_TOKEN_OVER,
+        OVER_TOKEN,
         } from '../actions/boardapp';
 /** ****initial value********/
 const initToken = { Emerald: 0, Sapphire: 0, Ruby: 0, Diamond: 0, Agate: 0, Gold: 0 };
@@ -163,6 +164,9 @@ export function token(state = initToken, action) {
     case PRESERVE_CARD: {
       return { ...state, Gold: (state.Gold) ? state.Gold - 1 : 0 };
     }
+    case RETURN_TOKEN_OVER: {
+      return { ...state, [action.token]: state[action.token] + 1 };
+    }
     default: {
       return state;
     }
@@ -189,6 +193,9 @@ export function userToken(state = initUserToken, action) {
       return action.userToken;
     }
     case RETURN_TOKEN: {
+      return { ...state, [action.token]: state[action.token] - 1 };
+    }
+    case RETURN_TOKEN_OVER: {
       return { ...state, [action.token]: state[action.token] - 1 };
     }
     case PRESERVE_CARD: {
@@ -290,6 +297,19 @@ export function returnedToken(state = [], action) {
     }
     case YOUR_TURN: {
       return [];
+    }
+    default: {
+      return state;
+    }
+  }
+}
+export function overToken(state = false, action) {
+  switch (action.type) {
+    case OVER_TOKEN: {
+      return true;
+    }
+    case YOUR_TURN: {
+      return false;
     }
     default: {
       return state;

@@ -11,7 +11,8 @@ class BoardApp extends Component {
     const { socket, init, myTurn, updateToken, roomId, full, addPlayer, updateUserData, nextTurn } = this.props;
     console.log(roomId);
     // socket.join(roomId);
-    socket.emit('mount', roomId);
+    const userName = 'here';
+    socket.emit('mount', userName, roomId);
     socket.on('full', full);// route back to lobby
     socket.on('init', (data) => { init(data); });
     socket.on('nextTurn', (data) => { nextTurn(data); });
